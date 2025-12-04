@@ -7,7 +7,12 @@
 //
 // Generated from the TEXTINCLUDE 2 resource.
 //
-#include "afxres.h"
+
+// afxres.h replacement for non-MFC project
+#ifndef __AFXRES_H__
+#define __AFXRES_H__
+#include <windows.h>
+#endif
 
 /////////////////////////////////////////////////////////////////////////////
 #undef APSTUDIO_READONLY_SYMBOLS
@@ -110,8 +115,8 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 2,8,0,663
- PRODUCTVERSION 2,8,0,663
+ FILEVERSION 2,8,0,665
+ PRODUCTVERSION 2,8,0,665
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -128,13 +133,13 @@ BEGIN
         BEGIN
             VALUE "CompanyName", "Ladislav Zezula"
             VALUE "FileDescription", "Interactive File System API Test"
-            VALUE "FileVersion", "2, 8, 0, 663\0"
+            VALUE "FileVersion", "2, 8, 0, 665\0"
             VALUE "InternalName", "FileTest"
             VALUE "LegalCopyright", "Copyright (c) 2004 - 2025 Ladislav Zezula"
             VALUE "LegalTrademarks", "http://www.zezula.net"
             VALUE "OriginalFilename", "FileTest.exe"
             VALUE "ProductName", "FileTest"
-            VALUE "ProductVersion", "2, 8, 0, 663\0"
+            VALUE "ProductVersion", "2, 8, 0, 665\0"
         END
     END
     BLOCK "VarFileInfo"

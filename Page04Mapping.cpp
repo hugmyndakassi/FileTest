@@ -416,7 +416,7 @@ static int OnQueryMappedFileName(HWND hDlg)
             // Query the mapped file name
             Status = NtQueryVirtualMemory(NtCurrentProcess(),
                                           pData->pvSectionMappedView,
-                                          MemorySectionName,
+                                          MemoryMappedFilenameInformation,
                                           Buffer,
                                           BufferSize,
                                          &BufferSize);

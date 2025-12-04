@@ -2,6 +2,8 @@
 // Microsoft Visual C++ generated include file.
 // Used by FileTest.rc
 //
+
+#define IDC_STATIC                       -1
 #define IDI_FILE_TEST                   101
 #define IDD_PAGE00_TRANSACTION          102
 #define IDD_PAGE01_CREATE               103
@@ -496,10 +498,7 @@
 #define IDC_SET_EMPTY_ACL               40059
 #define IDC_DELETE_OBJECT_SINGLE        40062
 #define IDC_DELETE_OBJECT_TREE          40063
-#define IDC_FORCE                       40064
-#define ID__EVERYONE                    40065
 #define IDC_SET_FULL_CONTROL            40066
-#define ID__SETACETYPE                  40067
 #define IDC_SET_ACE_TYPE                40068
 
 // Next default values for new objects
