@@ -7,12 +7,7 @@
 //
 // Generated from the TEXTINCLUDE 2 resource.
 //
-
-// afxres.h replacement for non-MFC project
-#ifndef __AFXRES_H__
-#define __AFXRES_H__
-#include <windows.h>
-#endif
+#include "winres.h"
 
 /////////////////////////////////////////////////////////////////////////////
 #undef APSTUDIO_READONLY_SYMBOLS
@@ -86,7 +81,7 @@ END
 
 2 TEXTINCLUDE 
 BEGIN
-    "#include ""afxres.h""\r\n"
+    "#include ""winres.h""\r\n"
     "\0"
 END
 
@@ -115,8 +110,8 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 2,8,0,665
- PRODUCTVERSION 2,8,0,665
+ FILEVERSION 2,8,0,667
+ PRODUCTVERSION 2,8,0,667
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -133,13 +128,13 @@ BEGIN
         BEGIN
             VALUE "CompanyName", "Ladislav Zezula"
             VALUE "FileDescription", "Interactive File System API Test"
-            VALUE "FileVersion", "2, 8, 0, 665\0"
+            VALUE "FileVersion", "2, 8, 0, 667\0"
             VALUE "InternalName", "FileTest"
             VALUE "LegalCopyright", "Copyright (c) 2004 - 2025 Ladislav Zezula"
             VALUE "LegalTrademarks", "http://www.zezula.net"
             VALUE "OriginalFilename", "FileTest.exe"
             VALUE "ProductName", "FileTest"
-            VALUE "ProductVersion", "2, 8, 0, 665\0"
+            VALUE "ProductVersion", "2, 8, 0, 667\0"
         END
     END
     BLOCK "VarFileInfo"
@@ -254,7 +249,7 @@ FONT 8, "MS Shell Dlg", 0, 0, 0x1
 BEGIN
     GROUPBOX        " Transaction for FileTest (requires Windows Vista) ",IDC_MAIN_FRAME,7,7,293,150
     PUSHBUTTON      "CreateTransaction",IDC_CREATE_TRANSACTION,14,21,279,14
-    LTEXT           "Creates a new transaction, but does not assigns it to the current thread",IDC_CREATE_TRANSACTION_HINT,14,35,279,8
+    LTEXT           "Creates a new transaction, but does not assign it to the current thread",IDC_CREATE_TRANSACTION_HINT,14,35,279,8
     PUSHBUTTON      "CommitTransaction",IDC_COMMIT_TRANSACTION,14,56,279,14,WS_DISABLED
     LTEXT           "Commits the transaction, all changes will appear on the volume",IDC_COMMIT_TRANSACTION_HINT,14,71,279,8,WS_DISABLED
     PUSHBUTTON      "RollbackTransaction",IDC_ROLLBACK_TRANSACTION,14,90,279,14,WS_DISABLED
@@ -899,9 +894,9 @@ BEGIN
     LTEXT           "/CreateOptions:Value",IDC_STATIC,13,126,93,8
     LTEXT           "Create options for opening the FileName1",IDC_STATIC,110,126,225,8
     LTEXT           "/CopyFileFlags:Value",IDC_STATIC,13,140,93,8
-    LTEXT           "Flags for copy operation from FileName1 to FIleName2",IDC_STATIC,110,140,225,8
+    LTEXT           "Flags for copy operation from FileName1 to FileName2",IDC_STATIC,110,140,225,8
     LTEXT           "/MoveFileFlags:HexValue",IDC_STATIC,13,154,93,8
-    LTEXT           "Flags for copy operation from FileName1 to FIleName2",IDC_STATIC,110,154,225,8
+    LTEXT           "Flags for copy operation from FileName1 to FileName2",IDC_STATIC,110,154,225,8
     LTEXT           "/SecurityInformation:Value",IDC_STATIC,13,168,93,8
     LTEXT           "SECURITY_INFORMATION for NtQuerySecurityObject",IDC_STATIC,110,168,225,8
     LTEXT           "/InitialPage:Value",IDC_STATIC,13,182,93,8
@@ -912,7 +907,7 @@ BEGIN
     LTEXT           "Pre-configures Desired Access for asynchronous operations",IDC_STATIC,110,210,225,8
     LTEXT           "/Help, /?",IDC_STATIC,13,224,93,8
     LTEXT           "Displays this dialog box",IDC_STATIC,110,224,225,8
-    LTEXT           "Values referred as ""Value"" may be in hexa-decimal format (prefixed with ""0x"") or in decimal format.",IDC_STATIC,13,243,321,16
+    LTEXT           "Values referred as ""Value"" may be in hexadecimal format (prefixed with ""0x"") or in decimal format.",IDC_STATIC,13,243,321,16
     DEFPUSHBUTTON   "Close",IDOK,290,274,50,14
 END
 

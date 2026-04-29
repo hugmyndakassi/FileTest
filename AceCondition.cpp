@@ -785,7 +785,7 @@ DWORD LocalGetStringForCondition(
                 // Is it an unary operator?
                 if(Operators[nOperatorIndex].Unary)
                 {
-                    LPWSTR szFormatString;
+                    LPCWSTR szFormatString;
                     LPWSTR szOperand;               // rdi
 
                     // There must be at least 1 operand

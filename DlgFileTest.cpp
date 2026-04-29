@@ -188,15 +188,19 @@ static void GetFileTestAppTitle(LPTSTR szTitle, int nMaxChars)
 
 static NTSTATUS SafeInitializeCriticalSection(CRITICAL_SECTION & Section)
 {
+#if defined(_MSC_VER)
     __try
     {
+#endif
         InitializeCriticalSection(&Section);
         return STATUS_SUCCESS;
+#if defined(_MSC_VER)
     }
     __except(EXCEPTION_EXECUTE_HANDLER)
     {
         return STATUS_NO_MEMORY;
     }
+#endif
 }
 
 static void InitializeTabControl(HWND hDlg, LPARAM lParam)

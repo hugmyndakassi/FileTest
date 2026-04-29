@@ -2717,7 +2717,7 @@ VOID CALLBACK TimerTooltipProc(HWND hDlg, UINT /* uMsg */, UINT_PTR /* idEvent *
     hToolTip = NULL;
 
     // Kill the timer 
-    if(nTimerTooltip != NULL)
+    if(nTimerTooltip != 0)
         KillTimer(hDlg, nTimerTooltip);
     nTimerTooltip = 0;
 }

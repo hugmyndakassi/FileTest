@@ -90,7 +90,7 @@ static int OnCreateTransaction(HWND hDlg)
                                                    0,
                                                    0,
                                                    0,
-                                                   NULL,
+                                                   0,
                                                    _T("Transaction for FileTest"));
         if(IsHandleValid(pData->hTransaction))
             pData->bTransactionActive = TRUE;

@@ -361,7 +361,7 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE, LPTSTR, int)
 
         // Pre-load menus so they don't generate any FS requests when loaded
         memset(g_ContextMenus, 0, sizeof(g_ContextMenus));
-        EnumResourceNames(g_hInst, RT_MENU, EnumMenusProc, NULL);
+        EnumResourceNames(g_hInst, RT_MENU, EnumMenusProc, 0);
 
         // Modify for synchronous open, if required
         if(bAsynchronousOpen == false)

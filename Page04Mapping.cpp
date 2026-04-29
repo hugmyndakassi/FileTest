@@ -519,7 +519,7 @@ static int OnUnmapViewClick(HWND hDlg)
         Status = NtUnmapViewOfSection(NtCurrentProcess(), pData->pvSectionMappedView);
 
         // Clear the base address, so the next click on "MapView" will succeed
-        Hex2DlgTextPtr(hDlg, IDC_BASE_ADDRESS, NULL);
+        Hex2DlgTextPtr(hDlg, IDC_BASE_ADDRESS, 0);
         pData->pvSectionMappedView = NULL;
 
         // Clear the view size, so the next click on "MapView" will succeed

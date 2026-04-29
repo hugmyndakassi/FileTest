@@ -121,7 +121,7 @@
  Version 1.9.0.208
 
  - Support for NtReadFile and NtWriteFile
- - Support for asynchronour file read and write
+ - Support for asynchronous file read and write
  - Support for Symbolic Links
  - Support for Hardlinks
  - Support for reparse points
@@ -145,7 +145,7 @@
 
  Version 1.8.2.171
 
- - Possibility to turn file virtualization on/on on Vista and under restricted accounts
+ - Possibility to turn file virtualization on/off on Vista and under restricted accounts
 
  Version 1.8.2.170
 

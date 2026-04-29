@@ -3,7 +3,6 @@
 // Used by FileTest.rc
 //
 
-#define IDC_STATIC                       -1
 #define IDI_FILE_TEST                   101
 #define IDD_PAGE00_TRANSACTION          102
 #define IDD_PAGE01_CREATE               103

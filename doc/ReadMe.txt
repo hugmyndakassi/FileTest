@@ -21,7 +21,7 @@ If anyone has some criticisms, comments, suggestions, bugs, or anything else,
 please mail me, I will try to help.
 
 You may use the tool and the source code freely, whatever you need it for,
-regardles if it is for personal or commercial use. The program is nothing
+regardless if it is for personal or commercial use. The program is nothing
 special, everyone could write it, if (s)he has time for it.
 
 Building FileTest
@@ -44,7 +44,7 @@ reviewed, or approved this program or any of the contents of this ZIP archive (e
 
 OSR Open Systems Resources, Inc. (OSR) expressly disclaims any warranty. THIS SOFTWARE IS PROVIDED
 "AS IS" WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING, WITHOUT LIMITATION, THE
-IMPLIED WARRANTIES OF MECHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.  THE ENTIRE RISK ARISING
+IMPLIED WARRANTIES OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.  THE ENTIRE RISK ARISING
 FROM THE USE OF THIS SOFTWARE REMAINS WITH YOU. OSR's entire liability and your exclusive remedy shall not
 exceed the price paid for this material.  In no event shall OSR or its suppliers be liable for
 any damages whatsoever (including, without limitation, damages for loss of business profit,

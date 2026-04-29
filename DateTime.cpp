@@ -205,8 +205,8 @@ static BOOL ConvertTextToDate(PSYSTEMTIME pSt, LPCTSTR szDateTimeStr, LPTSTR szD
         {
             // "d": Day of month as digits with no leading zero for single-digit days. 
             // "dd" : Day of month as digits with leading zero for single-digit days.
-            case 'd':
-            case 'dd':
+            case 0x64:          // 'd'
+            case 0x6464:        // 'dd'
             {
                 // Day must not be there yet
                 if(bDayConverted)
@@ -225,8 +225,8 @@ static BOOL ConvertTextToDate(PSYSTEMTIME pSt, LPCTSTR szDateTimeStr, LPTSTR szD
 
             // "ddd": Day of week as a three-letter abbreviation (LOCALE_SABBREVDAYNAME)
             // "dddd": Day of week as its full name (LOCALE_SDAYNAME).
-            case 'ddd':
-            case 'dddd':
+            case 0x646464:      // 'ddd'
+            case 0x64646464:    // 'dddd'
             {
                 // Convert the day of week. However, ignore the result of the conversion,
                 // as day of week is not necessary to get the FILETIME and would require
@@ -246,10 +246,10 @@ static BOOL ConvertTextToDate(PSYSTEMTIME pSt, LPCTSTR szDateTimeStr, LPTSTR szD
             //        uses the LOCALE_SABBREVMONTHNAME value associated with the specified locale. 
             // "MMMM": Month as its full name. The function uses the LOCALE_SMONTHNAME
             //         value associated with the specified locale. 
-            case 'M':
-            case 'MM':
-            case 'MMM':
-            case 'MMMM':
+            case 0x4D:          // 'M'
+            case 0x4D4D:        // 'MM'
+            case 0x4D4D4D:      // 'MMM'
+            case 0x4D4D4D4D:    // 'MMMM'
             {
                 // Month must not be there yet
                 if(bMonthConverted)
@@ -300,10 +300,10 @@ static BOOL ConvertTextToDate(PSYSTEMTIME pSt, LPCTSTR szDateTimeStr, LPTSTR szD
             // "yy": Year as last two digits, but with leading zero for years less than 10.
             // "yyy": Invalid year, but we accept it
             // "yyyy": Year represented by full four digits.
-            case 'y':
-            case 'yy':
-            case 'yyy':
-            case 'yyyy':
+            case 0x79:          // 'y'
+            case 0x7979:        // 'yy'
+            case 0x797979:      // 'yyy'
+            case 0x79797979:    // 'yyyy'
             {
                 // Convert year as digit
                 st.wYear = (WORD)StrToInt(szDateTimeStr, &szEndChar, 10);
@@ -385,8 +385,8 @@ static BOOL ConvertTextToTime(PSYSTEMTIME pSt, LPCTSTR szDateTimeStr, LPTSTR szT
         {
             // "h": Hours with no leading zero for single-digit hours; 12-hour clock.
             // "hh" : Hours with leading zero for single-digit hours; 12-hour clock.
-            case 'h':
-            case 'hh':
+            case 0x68:          // 'h'
+            case 0x6868:        // 'hh'
             {
                 // Store day number to SYSTEMTIME structure
                 st.wHour = (WORD)StrToInt(szDateTimeStr, &szEndChar, 10);
@@ -401,8 +401,8 @@ static BOOL ConvertTextToTime(PSYSTEMTIME pSt, LPCTSTR szDateTimeStr, LPTSTR szT
 
             // "H": Hours with no leading zero for single-digit hours; 24-hour clock.
             // "HH": Hours with leading zero for single-digit hours; 24-hour clock.
-            case 'H':
-            case 'HH':
+            case 0x48:          // 'H'
+            case 0x4848:        // 'HH'
             {
                 // Store day number to SYSTEMTIME structure
                 st.wHour = (WORD)StrToInt(szDateTimeStr, &szEndChar, 10);
@@ -417,8 +417,8 @@ static BOOL ConvertTextToTime(PSYSTEMTIME pSt, LPCTSTR szDateTimeStr, LPTSTR szT
 
             // "m": Minutes with no leading zero for single-digit minutes.
             // "mm": Minutes with leading zero for single-digit minutes.
-            case 'm':
-            case 'mm':
+            case 0x6D:          // 'm'
+            case 0x6D6D:        // 'mm'
             {
                 // Store day number to SYSTEMTIME structure
                 st.wMinute = (WORD)StrToInt(szDateTimeStr, &szEndChar, 10);
@@ -434,8 +434,8 @@ static BOOL ConvertTextToTime(PSYSTEMTIME pSt, LPCTSTR szDateTimeStr, LPTSTR szT
 
             // "s": Seconds with no leading zero for single-digit seconds.
             // "ss": Seconds with leading zero for single-digit seconds.
-            case 's':
-            case 'ss':
+            case 0x73:          // 's'
+            case 0x7373:        // 'ss'
             {
                 // Store day number to SYSTEMTIME structure
                 st.wSecond = (WORD)StrToInt(szDateTimeStr, &szEndChar, 10);
@@ -450,8 +450,8 @@ static BOOL ConvertTextToTime(PSYSTEMTIME pSt, LPCTSTR szDateTimeStr, LPTSTR szT
 
             // "t": One character time-marker string, such as A or P.
             // "tt": Multicharacter time-marker string, such as AM or PM.
-            case 't':
-            case 'tt':
+            case 0x74:          // 't'
+            case 0x7474:        // 'tt'
             {
                 // Try to recognize the string
                 if(AmPmNameToWord(szDateTimeStr, wHourModifier, nLength) == FALSE)

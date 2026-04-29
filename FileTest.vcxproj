@@ -123,6 +123,9 @@
     <PostBuildEvent>
       <Command />
     </PostBuildEvent>
+    <ResourceCompile>
+      <AdditionalIncludeDirectories>../aaa/inc</AdditionalIncludeDirectories>
+    </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Midl>
@@ -153,6 +156,9 @@
     <PostBuildEvent>
       <Command />
     </PostBuildEvent>
+    <ResourceCompile>
+      <AdditionalIncludeDirectories>../aaa/inc</AdditionalIncludeDirectories>
+    </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -178,6 +184,9 @@
     <PostBuildEvent>
       <Command>Postbuild.exe $(TargetPath) FileTest.rc /subsystem4</Command>
     </PostBuildEvent>
+    <ResourceCompile>
+      <AdditionalIncludeDirectories>../aaa/inc</AdditionalIncludeDirectories>
+    </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Midl>
@@ -207,6 +216,9 @@
     <PostBuildEvent>
       <Command>Postbuild.exe $(TargetPath) FileTest.rc /subsystem4</Command>
     </PostBuildEvent>
+    <ResourceCompile>
+      <AdditionalIncludeDirectories>../aaa/inc</AdditionalIncludeDirectories>
+    </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AceCondition.cpp" />

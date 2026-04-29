@@ -1537,7 +1537,7 @@ NTSTATUS ConvertToNtName(HWND hDlg, UINT nIDEdit)
             // Don't convert file ID
             if(nIDEdit == IDC_FILE_NAME && IsPossibleFileId(szFileName))
             {
-                SetResultInfo(hDlg, STATUS_FILE_ID_CONVERSION);
+                SetResultInfo(hDlg, RSI_NTSTATUS, STATUS_FILE_ID_CONVERSION);
             }
             else
             {

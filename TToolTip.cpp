@@ -36,7 +36,7 @@ BOOL TToolTip::Initialize(HINSTANCE hInst, HWND hWndParent)
         return FALSE;
 
     // Create the tooltip window
-    hWndToolTip = CreateWindowEx(NULL,
+    hWndToolTip = CreateWindowEx(0,
                                  TOOLTIPS_CLASS,
                                  NULL,
                                  WS_POPUP | TTS_NOPREFIX | TTS_ALWAYSTIP,

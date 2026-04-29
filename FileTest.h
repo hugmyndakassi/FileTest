@@ -58,6 +58,16 @@
 #define ALIGN_INT64(Address) ((ULONG) ((Address + 7) & ~7))
 #define ALIGN_EX(x, a)       (((x) + (a)-1) & ~((a)-1))
 
+// The 'min' and 'max' macros are not supported in GCC
+#ifdef __GNUC__
+#ifndef min
+#define min(a, b) (((a) < (b)) ? (a) : (b))
+#endif
+#ifndef max
+#define max(a, b) (((a) > (b)) ? (a) : (b))
+#endif
+#endif
+
 #define MAX_NT_PATH                 32767           // Maximum path name length in NT is 32767
 #define MAX_FILEID_PATH             0x24            // Maximum path name length of File ID string (C:\################ or C:\################################)
 #define MAX_CONTEXT_MENUS           0x08            // Maximum supported number of context menus
@@ -87,11 +97,11 @@
 #define WM_DEFER_CHANGE_ACE_GUID    (WM_USER + 0x100B)  // WPARAM = GUID index, LPARAM: TRUE = CreateNew
 #define WM_DEFER_CHANGE_ACE_CSA     (WM_USER + 0x100C)  // WPARAM = hItem, LPARAM = BOOL bShowFlagsDialog
 
-#define STATUS_INVALID_DATA_FORMAT  0xC1110001
-#define STATUS_AUTO_CALCULATED      0xC1110002
-#define STATUS_CANNOT_EDIT_THIS     0xC1110003
-#define STATUS_FILE_ID_CONVERSION   0xC1110004
-#define STATUS_COPIED_TO_CLIPBOARD  0xC1110005
+#define STATUS_INVALID_DATA_FORMAT  ((NTSTATUS)0xC1110001)
+#define STATUS_AUTO_CALCULATED      ((NTSTATUS)0xC1110002)
+#define STATUS_CANNOT_EDIT_THIS     ((NTSTATUS)0xC1110003)
+#define STATUS_FILE_ID_CONVERSION   ((NTSTATUS)0xC1110004)
+#define STATUS_COPIED_TO_CLIPBOARD  ((NTSTATUS)0xC1110005)
 
 #define SEVERITY_PENDING            2
 

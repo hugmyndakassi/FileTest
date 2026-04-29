@@ -689,8 +689,15 @@ DWORD
 //-----------------------------------------------------------------------------
 // Defines for the reparse point
 
+#ifndef IO_REPARSE_TAG_MOUNT_POINT
 #define IO_REPARSE_TAG_MOUNT_POINT              (0xA0000003L)       // winnt
+#endif
+
+#ifndef IO_REPARSE_TAG_HSM
 #define IO_REPARSE_TAG_HSM                      (0xC0000004L)       // winnt
+#endif
+
+#ifndef IO_REPARSE_TAG_DRIVE_EXTENDER
 #define IO_REPARSE_TAG_DRIVE_EXTENDER           (0x80000005L)
 #define IO_REPARSE_TAG_HSM2                     (0x80000006L)       // winnt
 #define IO_REPARSE_TAG_SIS                      (0x80000007L)       // winnt
@@ -702,15 +709,45 @@ DWORD
 #define IO_REPARSE_TAG_IIS_CACHE                (0xA0000010L)
 #define IO_REPARSE_TAG_DFSR                     (0x80000012L)       // winnt
 #define IO_REPARSE_TAG_DEDUP                    (0x80000013L)       // winnt
+#endif
+
+#ifndef IO_REPARSE_TAG_APPXSTRM
 #define IO_REPARSE_TAG_APPXSTRM                 (0xC0000014L)
+#endif
+
+#ifndef IO_REPARSE_TAG_NFS
 #define IO_REPARSE_TAG_NFS                      (0x80000014L)       // winnt
+#endif
+
+#ifndef IO_REPARSE_TAG_FILE_PLACEHOLDER
 #define IO_REPARSE_TAG_FILE_PLACEHOLDER         (0x80000015L)       // winnt
+#endif
+
+#ifndef IO_REPARSE_TAG_DFM
 #define IO_REPARSE_TAG_DFM                      (0x80000016L)
+#endif
+
+#ifndef IO_REPARSE_TAG_WOF
 #define IO_REPARSE_TAG_WOF                      (0x80000017L)       // winnt
+#endif
+
+#ifndef IO_REPARSE_TAG_WCI
 #define IO_REPARSE_TAG_WCI                      (0x80000018L)       // winnt
+#endif
+
+#ifndef IO_REPARSE_TAG_WCI_1
 #define IO_REPARSE_TAG_WCI_1                    (0x90001018L)       // winnt
+#endif
+
+#ifndef IO_REPARSE_TAG_GLOBAL_REPARSE
 #define IO_REPARSE_TAG_GLOBAL_REPARSE           (0xA0000019L)       // winnt
+#endif
+
+#ifndef IO_REPARSE_TAG_CLOUD
 #define IO_REPARSE_TAG_CLOUD                    (0x9000001AL)       // winnt
+#endif
+
+#ifndef IO_REPARSE_TAG_CLOUD_1
 #define IO_REPARSE_TAG_CLOUD_1                  (0x9000101AL)       // winnt
 #define IO_REPARSE_TAG_CLOUD_2                  (0x9000201AL)       // winnt
 #define IO_REPARSE_TAG_CLOUD_3                  (0x9000301AL)       // winnt
@@ -727,18 +764,55 @@ DWORD
 #define IO_REPARSE_TAG_CLOUD_E                  (0x9000E01AL)       // winnt
 #define IO_REPARSE_TAG_CLOUD_F                  (0x9000F01AL)       // winnt
 #define IO_REPARSE_TAG_CLOUD_MASK               (0x0000F000L)       // winnt
+#endif
+
+#ifndef IO_REPARSE_TAG_APPEXECLINK
 #define IO_REPARSE_TAG_APPEXECLINK              (0x8000001BL)       // winnt
+#endif
+
+#ifndef IO_REPARSE_TAG_PROJFS
 #define IO_REPARSE_TAG_PROJFS                   (0x9000001CL)       // winnt
+#endif
+
+#ifndef IO_REPARSE_TAG_LX_SYMLINK
 #define IO_REPARSE_TAG_LX_SYMLINK               (0xA000001DL)
+#endif
+
+#ifndef IO_REPARSE_TAG_STORAGE_SYNC
 #define IO_REPARSE_TAG_STORAGE_SYNC             (0x8000001EL)       // winnt
+#endif
+
+#ifndef IO_REPARSE_TAG_WCI_TOMBSTONE
 #define IO_REPARSE_TAG_WCI_TOMBSTONE            (0xA000001FL)       // winnt
+#endif
+
+#ifndef IO_REPARSE_TAG_UNHANDLED
 #define IO_REPARSE_TAG_UNHANDLED                (0x80000020L)       // winnt
+#endif
+
+#ifndef IO_REPARSE_TAG_ONEDRIVE
 #define IO_REPARSE_TAG_ONEDRIVE                 (0x80000021L)       // winnt
+#endif
+
+#ifndef IO_REPARSE_TAG_PROJFS_TOMBSTONE
 #define IO_REPARSE_TAG_PROJFS_TOMBSTONE         (0xA0000022L)       // winnt
+#endif
+
+#ifndef IO_REPARSE_TAG_AF_UNIX
 #define IO_REPARSE_TAG_AF_UNIX                  (0x80000023L)       // winnt
+#endif
+
+#ifndef IO_REPARSE_TAG_LX_FIFO
 #define IO_REPARSE_TAG_LX_FIFO                  (0x80000024L)
+#endif
+
+#ifndef IO_REPARSE_TAG_LX_CHR
 #define IO_REPARSE_TAG_LX_CHR                   (0x80000025L)
+#endif
+
+#ifndef IO_REPARSE_TAG_LX_BLK
 #define IO_REPARSE_TAG_LX_BLK                   (0x80000026L)
+#endif
 
 #ifndef FSCTL_SET_REPARSE_POINT
 #define FSCTL_SET_REPARSE_POINT         CTL_CODE(FILE_DEVICE_FILE_SYSTEM, 41, METHOD_BUFFERED, FILE_SPECIAL_ACCESS) // REPARSE_DATA_BUFFER,

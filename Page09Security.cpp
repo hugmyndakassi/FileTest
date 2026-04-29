@@ -634,7 +634,7 @@ static LPTSTR GetItemTextValue(LPTSTR szItemText, bool bKeepQuotedPart = false)
     LPTSTR szStringEnd;
     LPTSTR szTextPtr;
 
-    // Retrieve the first occurence of ":"
+    // Retrieve the first occurrence of ":"
     if((szTextPtr = _tcschr(szItemText, _T(':'))) != NULL)
     {
         // Skip the colon

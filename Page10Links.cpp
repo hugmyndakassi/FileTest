@@ -1075,7 +1075,7 @@ static void OnUpdateView(HWND hDlg)
                 TreeView_InsertInteger(hWndChild, hItem, _T("Reserved"), _T("0x%08X"), ReparseData->WcifsReparseBuffer.Reserved);
                 TreeView_InsertGuid(hWndChild, hItem, _T("LookupGuid"), ReparseData->WcifsReparseBuffer.LookupGuid);
                 TreeView_InsertInteger(hWndChild, hItem, _T("WciNameLength"), _T("0x%04X"), ReparseData->WcifsReparseBuffer.WciNameLength);
-                TreeView_InsertStrOffs(hWndChild, hItem, _T("WciName"), ReparseData, FIELD_OFFSET(REPARSE_DATA_BUFFER, WcifsReparseBuffer.WciName), ReparseData->WcifsReparseBuffer.WciNameLength, NULL);
+                TreeView_InsertStrOffs(hWndChild, hItem, _T("WciName"), ReparseData, FIELD_OFFSET(REPARSE_DATA_BUFFER, WcifsReparseBuffer.WciName), ReparseData->WcifsReparseBuffer.WciNameLength, 0);
             }
             break;
 

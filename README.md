@@ -53,4 +53,4 @@ cmake .. -G "Visual Studio 17 2022"                    :: For 64-bit build
 cmake .. -G "Visual Studio 17 2022" -A Win32           :: For 32-bit build
 cmake --build . --config Release
 ```
-The final EXE fill be in `.\build\Release`
+The final EXE will be in `.\build\Release`

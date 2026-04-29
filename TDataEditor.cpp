@@ -405,6 +405,14 @@ static int FindNextWord(TEditorData * pData, size_t nLine, int nCol)
 static void CreateTextFont(TEditorData * pData)
 {
     LOGFONT LogFont;
+    UINT nDpi = USER_DEFAULT_SCREEN_DPI;
+
+    // Get the DPI of the monitor the window is on
+    if(pData->hWndParent != NULL)
+    {
+        if((nDpi = DPI_GetDpiForWindow(pData->hWndParent)) == NULL)
+            nDpi = USER_DEFAULT_SCREEN_DPI;
+    }
 
     // Create font for all windows
     ZeroMemory(&LogFont, sizeof(LOGFONT));
@@ -412,14 +420,14 @@ static void CreateTextFont(TEditorData * pData)
     LogFont.lfCharSet        = DEFAULT_CHARSET;
     LogFont.lfQuality        = DEFAULT_QUALITY;
     LogFont.lfPitchAndFamily = FIXED_PITCH;
-    LogFont.lfHeight         = -12;
+    LogFont.lfHeight         = -MulDiv(12, nDpi, USER_DEFAULT_SCREEN_DPI);
     StringCchCopy(LogFont.lfFaceName, _countof(LogFont.lfFaceName), _T("Courier New"));
     pData->hFont = CreateFontIndirect(&LogFont);
 
     // If the font couldn't be created, create default one
     if(pData->hFont == NULL)
     {
-        LogFont.lfHeight = -15;
+        LogFont.lfHeight = -MulDiv(15, nDpi, USER_DEFAULT_SCREEN_DPI);
         StringCchCopy(LogFont.lfFaceName, _countof(LogFont.lfFaceName), _T("Courier"));
         pData->hFont = CreateFontIndirect(&LogFont);
 
