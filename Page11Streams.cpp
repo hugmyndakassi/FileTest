@@ -226,7 +226,7 @@ NTSTATUS NtCreateFileStream(PUNICODE_STRING SourceName, TFileStream * pStream)
 
     // Open the stream
     InitializeObjectAttributes(&ObjAttr, &FileName, OBJ_CASE_INSENSITIVE, NULL, NULL);
-    Status = NtCreateFile(&FileHandle, 
+    Status = NtCreateFile(&FileHandle,
                            FILE_WRITE_DATA | SYNCHRONIZE,
                           &ObjAttr,
                           &IoStatus,
@@ -290,7 +290,7 @@ static NTSTATUS ConvertStreamsToEaList(
         pFileEa = pEa = (PFILE_FULL_EA_INFORMATION)RtlAllocateHeap(RtlProcessHeap(), HEAP_ZERO_MEMORY, cbEaLength);
         if(pFileEa == NULL)
             return STATUS_INSUFFICIENT_RESOURCES;
-    
+
         cbEaLength = 0;
 
         // Parse the list again and store all EAs
@@ -334,7 +334,7 @@ static NTSTATUS ConvertStreamsToEaList(
     if(PtrFileEa != NULL)
         PtrFileEa[0] = pFileEa;
     if(pcbFileEa != NULL)
-        pcbFileEa[0] = cbEaLength; 
+        pcbFileEa[0] = cbEaLength;
     return STATUS_SUCCESS;
 }
 
@@ -400,7 +400,7 @@ static NTSTATUS LoadStreamFromFile(
 
     // Check against the maximum stream size
     if(NT_SUCCESS(Status))
-    {        
+    {
         if(StdInfo.EndOfFile.HighPart != 0 || StdInfo.EndOfFile.LowPart > MAX_STREAM_LENGTH)
             Status = STATUS_BAD_FILE_TYPE;
     }
@@ -463,7 +463,7 @@ static NTSTATUS SaveStreamToFile(
     NTSTATUS Status;
     HANDLE FileHandle = NULL;
     TCHAR szFileName[MAX_PATH];
-    
+
     // Construct the new file name
     StringCchPrintf(szFileName, _countof(szFileName), _T("%s#%s%02u#%s"), szMainFileName, StreamTypes[dwStreamType], dwStreamIndex, szStreamName);
     Status = FileNameToUnicodeString(&FileName, szFileName);
@@ -484,7 +484,7 @@ static NTSTATUS SaveStreamToFile(
                                NULL,
                                0);
     }
-                               
+
     // Write the data
     if(NT_SUCCESS(Status))
     {
@@ -505,7 +505,7 @@ static NTSTATUS SaveStreamToFile(
 }
 
 NTSTATUS LoadStreamsFromDirectory(
-    PLIST_ENTRY pStreamLinks,    
+    PLIST_ENTRY pStreamLinks,
     PUNICODE_STRING SourceName)
 {
     PFILE_DIRECTORY_INFORMATION DirBuffer = NULL;
@@ -541,7 +541,7 @@ NTSTATUS LoadStreamsFromDirectory(
         FileMask.Length = SourceName->Length - FolderName.Length + 4;
         FileMask.Buffer = SourceName->Buffer + (FolderName.Length / sizeof(WCHAR));
         StringCchCat(szPlainName, SourceName->MaximumLength / sizeof(WCHAR), L"#*");
-        
+
         // Open the directory
         InitializeObjectAttributes(&ObjAttr, &FolderName, OBJ_CASE_INSENSITIVE, NULL, NULL);
         Status = NtOpenFile(&DirHandle,
@@ -630,7 +630,7 @@ NTSTATUS LoadStreamsFromDirectory(
 
 static NTSTATUS EaListToListView(
     TFileTestData * pData,
-    HWND hDlg, 
+    HWND hDlg,
     HWND hListView,
     PFILE_FULL_EA_INFORMATION EaBuffer,
     bool bExportAsWell)
@@ -680,7 +680,7 @@ static NTSTATUS EaListToListView(
 
 static NTSTATUS StreamsToListView(
     TFileTestData * pData,
-    HWND hDlg, 
+    HWND hDlg,
     HWND hListView,
     PFILE_STREAM_INFORMATION StrmBuffer,
     bool bExportAsWell)
@@ -702,7 +702,7 @@ static NTSTATUS StreamsToListView(
     // If the parent file was open with FILE_OPEN_REPARSE_POINT,
     // we need to propagate this flag to the streams too.
     // This allows us to open file created with alternate streams that are links to non existing file
-    // 
+    //
     // Example: mklink.exe C:\sample_file.exe:byebye \??\nul
     //
 
@@ -993,7 +993,7 @@ static int OnImportStreams(HWND hDlg)
 
     // Query the directory and load all streams from all files
     if(NT_SUCCESS(Status))
-        Status = LoadStreamsFromDirectory(&StreamLinks, &FileName); 
+        Status = LoadStreamsFromDirectory(&StreamLinks, &FileName);
 
     // Delete the file
     if(NT_SUCCESS(Status))
@@ -1064,7 +1064,7 @@ static int OnImportStreams(HWND hDlg)
                                               pStream->dwStreamType,
                                               pStream->cbStreamData);
         }
-        
+
         // Free the stream structure
         RemoveEntryList(&pStream->Entry);
         RtlFreeHeap(RtlProcessHeap(), 0, pStream);

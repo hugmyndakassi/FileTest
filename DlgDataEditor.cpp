@@ -64,7 +64,7 @@ static void OnNotify(HWND hDlg, NMHDR * pNMHDR)
     {
         PDTE_EXCEPTION_DATA pExceptionData = (PDTE_EXCEPTION_DATA)pNMHDR;
         HWND hWndChild = GetDlgItem(hDlg, IDC_INFORMATION);
-        
+
         if(hWndChild != NULL)
         {
             SetWindowTextRc(hWndChild, IDS_DATA_EXCEPTION,

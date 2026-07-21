@@ -212,7 +212,7 @@ static int TryGetFileSize(HANDLE hFile, LARGE_INTEGER & TotalFileSize)
                       &dwBytesReturned,
                       NULL))
     {
-        TotalFileSize.QuadPart = DiskGeometry.Cylinders.QuadPart * 
+        TotalFileSize.QuadPart = DiskGeometry.Cylinders.QuadPart *
                                  DiskGeometry.TracksPerCylinder *
                                  DiskGeometry.SectorsPerTrack *
                                  DiskGeometry.BytesPerSector;
@@ -422,7 +422,7 @@ static DWORD CopyLoop(
                     break;
 
                 default:    // ERROR_CRC, ERROR_IO_DEVICE
-                    
+
                     // Shall we skip the I/O errors?
                     if(dwCopyFlags & COPY_FILE_SKIP_IO_ERRORS)
                     {
@@ -438,11 +438,11 @@ static DWORD CopyLoop(
                         memset(pbCopyBuffer, 0, SECTOR_SIZE);
                         dwTransferred = cbBlockSize;
                     }
-                    
+
                     // Log the error.
                     LogPrintf(pData->hLogFile, szReadErrorFmt, ByteOffset.QuadPart, dwErrCode);
                     pData->TotalBytes.QuadPart += cbBlockSize;
-                    
+
                     // If we are supposed to skip read errors, reset the error code
                     dwErrCode = (dwCopyFlags & COPY_FILE_SKIP_IO_ERRORS) ? ERROR_SUCCESS : dwErrCode;
                     break;
@@ -465,7 +465,7 @@ static DWORD CopyLoop(
         // Report the copy progress
         ByteOffset.QuadPart += dwTransferred;
 
-        // Show the progress twice per second 
+        // Show the progress twice per second
         if(GetTickCount() > (dwLastTickCount + 500))
         {
             dwRet = CopyProgressRoutine(TotalFileSize, ByteOffset, TotalFileSize, ByteOffset, 0, 0, hFile1, hFile2, pData);
@@ -545,7 +545,7 @@ static void CopyFileWorker_ByHand(TDialogData * pData, LPCTSTR szFileName1, LPCT
     }
 
     // Allocate the buffer for holding copied data
-    // Use VirtualAlloc to ensure that the buffer is sector aligned 
+    // Use VirtualAlloc to ensure that the buffer is sector aligned
     if(dwErrCode == ERROR_SUCCESS)
     {
         // Allocate buffer
@@ -685,7 +685,7 @@ static INT_PTR OnInitDialog(HWND hDlg, LPARAM lParam)
     pData->hProgress     = GetDlgItem(hDlg, IDC_COPY_PROGRESS);
     pData->hCopyInfo     = GetDlgItem(hDlg, IDC_COPY_INFO);
     SetWindowLongPtr(hDlg, DWLP_USER, lParam);
-    
+
     // Initiate the copy
     PostMessage(hDlg, WM_START_WORK, 0, 0);
     return TRUE;
@@ -737,7 +737,7 @@ static INT_PTR OnCommand(HWND hDlg, UINT nNotifyCode, UINT nCtrlID)
         pData->dwErrCode = ERROR_CANCELLED;
         EndDialog(hDlg, nCtrlID);
     }
-    
+
     return FALSE;
 }
 

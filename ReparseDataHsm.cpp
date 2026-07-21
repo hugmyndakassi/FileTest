@@ -256,7 +256,7 @@ NTSTATUS HsmValidateReparseData(PREPARSE_DATA_BUFFER ReparseData)
         return STATUS_UNKNOWN_REVISION;
     if((HsmReparseData->Flags & 0x0F) < 1)
         return STATUS_REVISION_MISMATCH;
-    
+
     // Get the HSM data and the remaining length
     HsmData = (PHSM_DATA)&HsmReparseData->FileData;
     RemainingLength = HsmReparseData->Length - FIELD_OFFSET(HSM_REPARSE_DATA, FileData);

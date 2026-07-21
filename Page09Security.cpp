@@ -79,7 +79,7 @@ typedef struct _TREE_ITEM_INFO
 
     // Creates a new item of that type
     NTSTATUS(*CreateNew)(_TREE_ITEM_INFO * pItemInfo, LPBYTE pbDataBuffer, size_t * pcbDataBuffer);
-    
+
     // Type of the item data
     PVOID ItemData;
 } TREE_ITEM_INFO, *PTREE_ITEM_INFO;
@@ -714,7 +714,7 @@ static void TV_MakeItemText(
     // Finally, format the data to the item
     if(pcbMoveBy != NULL)
         pcbMoveBy[0] = cbMoveBy;
-    
+
     // Format the final value
     if(GLOBAL_ItemIndex != INVALID_ITEM_INDEX && bApplyIndex)
         rsprintf(szBuffer, ccBuffer, nIDFormat, GLOBAL_ItemIndex, szDataText);
@@ -1344,7 +1344,7 @@ static NTSTATUS StringTo_Ace(PTREE_ITEM_INFO /* pItemInfo */, LPCTSTR szString, 
     // An unknown ACE type: "UNKNOWN_ACE_TYPE: %02x"
     dwAceType = _tcstoul(szString, &szEndPtr, 16);
     if(dwAceType <= 0xFF && szEndPtr[0] == 0)
-    {   
+    {
         BYTE AceType = (BYTE)(dwAceType);
         return CopyDataAway(pbPtr, pbEnd, &AceType, sizeof(AceType), pcbMoveBy);
     }
@@ -1949,7 +1949,7 @@ static HTREEITEM TV_InsertNewItemAce(
 
         // Insert the ACE fields
         TV_InsertNewItemAceFields(hWndTree, hAceItem, AceHelper, pbPtr, pbEnd);
-        
+
         // Invalidate pointer to the GUID flags
         pAceInWork = NULL;
     }
@@ -2681,7 +2681,7 @@ static HTREEITEM TreeView_GetPreviousItem(HWND hWndTree, HTREEITEM hItem)
 static BOOL DeferSetItemTextValue(HWND hDlg, HTREEITEM hItem, LPCTSTR szItemText)
 {
     LPTSTR szBuffer;
-    
+
     // Create copy of the buffer
     if((szBuffer = NewStr(szItemText)) == NULL)
         return FALSE;
@@ -3142,7 +3142,7 @@ static int OnBeginLabelEdit(HWND hDlg, LPNMTVDISPINFO pTVDispInfo)
         }
     }
 
-    // If the editing started successfully, 
+    // If the editing started successfully,
     // make sure that Esc key will not close the entire FileTest
     if(bStartEditing)
     {

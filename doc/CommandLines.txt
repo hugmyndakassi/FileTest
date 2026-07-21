@@ -1,0 +1,3 @@
+\??\c:\VMWARE\Test-003-VALID_ACL /EnablePrivilege:SeTakeOwnershipPrivilege /DesiredAccess:0x000E0000 /OpenFile /AsyncOpen /InitialPage:0x0009
+
+\??\c:\Users\E02056\Downloads /EnablePrivilege:SeSecurityPrivilege /DesiredAccess:0x000E0000 /OpenFile /AsyncOpen /InitialPage:0x0009 /SecurityInformation:0x20

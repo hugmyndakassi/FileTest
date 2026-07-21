@@ -116,7 +116,7 @@ LPBYTE ACE_CSA_OBJECT::ImportData(LPBYTE pbStructure, LPBYTE pbEnd, size_t Offse
     memcpy(lpNewData, pbStructure + Offset, Length);
     lpData = lpNewData;
     cbData = (ULONG)(Length);
-    
+
     // Return the position of the data after the input
     return pbStructure + Offset + ALIGN_TO_SIZE(Length, sizeof(DWORD));
 }

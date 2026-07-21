@@ -75,14 +75,14 @@ static TFlagInfo AllocationTypeValues[] =
 
 static TFlagInfo PageProtectionValues[] =
 {
-    FLAGINFO_BITV(PAGE_NOACCESS),   
-    FLAGINFO_BITV(PAGE_READONLY),   
-    FLAGINFO_BITV(PAGE_READWRITE),   
-    FLAGINFO_BITV(PAGE_WRITECOPY),   
-    FLAGINFO_BITV(PAGE_EXECUTE),   
-    FLAGINFO_BITV(PAGE_EXECUTE_READ),   
-    FLAGINFO_BITV(PAGE_EXECUTE_READWRITE),   
-    FLAGINFO_BITV(PAGE_EXECUTE_WRITECOPY),   
+    FLAGINFO_BITV(PAGE_NOACCESS),
+    FLAGINFO_BITV(PAGE_READONLY),
+    FLAGINFO_BITV(PAGE_READWRITE),
+    FLAGINFO_BITV(PAGE_WRITECOPY),
+    FLAGINFO_BITV(PAGE_EXECUTE),
+    FLAGINFO_BITV(PAGE_EXECUTE_READ),
+    FLAGINFO_BITV(PAGE_EXECUTE_READWRITE),
+    FLAGINFO_BITV(PAGE_EXECUTE_WRITECOPY),
     FLAGINFO_BITV(PAGE_GUARD),
     FLAGINFO_BITV(PAGE_NOCACHE),
     FLAGINFO_BITV(PAGE_WRITECOMBINE),
@@ -260,7 +260,7 @@ static int OnInitDialog(HWND hDlg, LPARAM lParam)
         pAnchors->AddAnchor(hDlg, IDC_HANDLE, akLeft | akRight | akBottom);
     }
 
-    // If we have a tooltip window, init tooltips 
+    // If we have a tooltip window, init tooltips
     g_Tooltip.AddToolTip(hDlg, IDC_DESIRED_ACCESS, SectionAccessValues);
     g_Tooltip.AddToolTip(hDlg, IDC_ALLOCATION_ATTRIBUTES, AllocationAttributesValues);
     g_Tooltip.AddToolTip(hDlg, IDC_ALLOCATION_TYPE, AllocationTypeValues);
@@ -485,7 +485,7 @@ static int OnMapViewClick(HWND hDlg)
             Hex2DlgTextPtr(hDlg, IDC_BASE_ADDRESS, (ULONG_PTR)BaseAddress);
         if(ViewSize != pData->cbSectViewSize)
             Hex2DlgTextPtr(hDlg, IDC_VIEW_SIZE, ViewSize);
-        
+
         // Remember the view
         pData->pvSectionMappedView = BaseAddress;
         pData->cbSectViewSize = ViewSize;

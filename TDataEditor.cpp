@@ -83,10 +83,10 @@ struct TEditorData
 // Local variables
 
 // ASCII to printable characters
-BYTE AsciiToPrintableTable[256] = 
+BYTE AsciiToPrintableTable[256] =
 {
-    0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 
-    0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 
+    0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20,
+    0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20,
     0x20, 0x21, 0x22, 0x23, 0x24, 0x25, 0x26, 0x27, 0x28, 0x29, 0x2A, 0x2B, 0x2C, 0x2D, 0x2E, 0x2F,
     0x30, 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x38, 0x39, 0x3A, 0x3B, 0x3C, 0x3D, 0x3E, 0x3F,
     0x40, 0x41, 0x42, 0x43, 0x44, 0x45, 0x46, 0x47, 0x48, 0x49, 0x4A, 0x4B, 0x4C, 0x4D, 0x4E, 0x4F,
@@ -120,7 +120,7 @@ static void SendExceptionNotification(
     Data.hdr.hwndFrom = pData->hWnd;
     Data.hdr.idFrom   = pData->dwId;
     Data.hdr.code     = DEN_EXCEPTION;
-    
+
     Data.ExceptionAddress = ExceptionAddress;
     Data.ExceptionCode    = ExceptionCode;
     Data.WriteOperation   = WriteOperation;
@@ -294,7 +294,7 @@ static int FormatOneLine(TEditorData * pData, size_t nLineIndex)
         // Put the spaces
         *szLineBuffer++ = _T(' ');
         *szLineBuffer++ = _T(' ');
-        
+
         // Put the space between address and hexa values
         pbDataBegin = pData->pbEditorDataBegin + DataOffset;
         pbDataEnd = pbDataBegin + pData->cbBytesPerLine;
@@ -461,12 +461,12 @@ static void QueryFontDimensions(TEditorData * pData)
         pData->nCharHeight = TextMetrics.tmHeight;
         pData->nTabSize = pData->nAveCharWidth * 4;
         assert(pData->nCharHeight != 0);
-        
+
         // Remember if we are using variable pich font.
         // Note that the TMPF_FIXED_PITCH bit is actually the opposite of what its meaning says
         pData->bFixedFont = (TextMetrics.tmPitchAndFamily & TMPF_FIXED_PITCH) ? false : true;
 
-        // Select the old font and 
+        // Select the old font and
         SelectObject(hdc, hOldFont);
         ReleaseDC(pData->hWnd, hdc);
     }
@@ -492,7 +492,7 @@ static void RecalculateView(TEditorData * pData)
 
     // Update the total number of lines
     cbEditorData = (size_t)(pData->pbEditorDataEnd - pData->pbEditorDataBegin);
-    if(cbEditorData > 0) 
+    if(cbEditorData > 0)
         pData->nLines = ((cbEditorData - 1) / pData->cbBytesPerLine) + 1;
 
     // Update the number of lines, based on new size
@@ -585,7 +585,7 @@ static bool RecalcCaretXY(TEditorData * pData, bool * bNeedRedraw)
     pData->nCaretY = 0;
     if(pData->nLines > 0 && pData->nCaretLine > pData->nTopIndex)
         pData->nCaretY = ((int)(pData->nCaretLine - pData->nTopIndex) * pData->nCharHeight);
-    
+
     // Calculate the X-position of the caret
     pData->nCaretX = 0;
     if(pData->nLines > 0 && pData->nCaretCol > 0)
@@ -595,14 +595,14 @@ static bool RecalcCaretXY(TEditorData * pData, bool * bNeedRedraw)
         {
             // Retrieve the n-th line
             FormatOneLine(pData, pData->nCaretLine);
-            
+
             // Calculate the width of the text from the beginning up to the char at the caret pos
             hOldFont = (HFONT)SelectObject(hdc, pData->hFont);
             TextSize = GetTabbedTextExtent(hdc, pData->szLineBuffer, pData->nCaretCol, 1, &pData->nTabSize);
             SelectObject(hdc, hOldFont);
             ReleaseDC(pData->hWnd, hdc);
         }
-        
+
         // Increment the cursor x-pos by the char position
         pData->nCaretX += LOWORD(TextSize);
     }
@@ -661,7 +661,7 @@ static void MousePosToCaretPos(TEditorData * pData,
         nCaretLine = pData->nTopIndex - (-nMouseY / pData->nCharHeight) - 1;
     else
         nCaretLine = pData->nTopIndex + (nMouseY / pData->nCharHeight);
-    
+
     // By default, use average char width to calculate cursor X coordinate
     nCaretCol = (nMouseX / pData->nAveCharWidth);
 
@@ -700,7 +700,7 @@ static void MousePosToCaretPos(TEditorData * pData,
                         nCharIndex2 = nCharHalfX;
                 }
 
-                // Get the column 
+                // Get the column
                 nCaretCol = (int)nCharIndex1;
 
                 // Release the HDC of the window
@@ -709,7 +709,7 @@ static void MousePosToCaretPos(TEditorData * pData,
             }
             else
             {
-                // On a fixed-pitch font, it's simple ... 
+                // On a fixed-pitch font, it's simple ...
                 nCaretCol = (nMouseX + nNextCharTreshold) / pData->nAveCharWidth;
                 if(nCaretCol > (int)(nLineLength + 1))
                     nCaretCol = (int)(nLineLength + 1);
@@ -978,7 +978,7 @@ static LRESULT OnKeyDown(HWND hWnd, WPARAM wParam, LPARAM /* lParam */)
     // Determine the selection mode
     SelectionMode = bIsShiftPressed ? SmContinueSelection : SmStartSelection;
 
-    // Perform key-specific action    
+    // Perform key-specific action
     switch(uKeyCode)
     {
         case VK_SHIFT:
@@ -1069,7 +1069,7 @@ static LRESULT OnKeyDown(HWND hWnd, WPARAM wParam, LPARAM /* lParam */)
             // Ctrl+Shift+PageDown: Moves the caret to the bottom line of the page with selection
             // Ctrl+PageDown: Moves the caret to the bottom line of the page
             // Shift+PageDown: Moves the caret one page down with selection
-            // PageDown: Moves the top index one page down, but caret remains 
+            // PageDown: Moves the top index one page down, but caret remains
             nNewTopIndex  = (bIsCtrlPressed == false) ? (pData->nTopIndex + pData->nFullVisibleLines) : pData->nTopIndex;
             nNewCaretLine = (bIsCtrlPressed == false) ? (pData->nCaretLine + pData->nFullVisibleLines) : (pData->nTopIndex + pData->nFullVisibleLines - 1);
             MoveTopIndexAndCaretTo(pData, nNewTopIndex, nNewCaretLine, pData->nCaretCol, SelectionMode);
@@ -1472,7 +1472,7 @@ static void OnPaint(HWND hWnd)
                 {
                     SetTextColor(hPaintDC, DATAEDIT_COLOR_NORMAL_FG);
                     SetBkColor(hPaintDC, DATAEDIT_COLOR_NORMAL_BG);
-        
+
                     nLengthToDraw = (nStartSelection - nStartDraw);
                     TextSize = TabbedTextOut(hPaintDC, x, y, szLineText, nLengthToDraw, 1, &pData->nTabSize, 0);
                     nStartDraw += nLengthToDraw;
@@ -1514,7 +1514,7 @@ static void OnPaint(HWND hWnd)
                     ExtTextOut(hPaintDC, 0, 0, ETO_OPAQUE, &LineRect, NULL, 0, NULL);
                 }
             }
-            else    
+            else
             {
                 // Paint the entire line as empty filled rectangle
                 SetBkColor(hPaintDC, DATAEDIT_COLOR_NORMAL_BG);
@@ -1560,7 +1560,7 @@ static LRESULT WINAPI WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPa
         case WM_CREATE:
             OnCreate(hWnd, (LPCREATESTRUCT)lParam);
             break;
-                                         
+
         case WM_SETFONT:
             return 0;
 

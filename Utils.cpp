@@ -17,14 +17,14 @@
 static BYTE CharToValue[0x80] =
 {
 //   00    01    02    03    04    05    06    07    08    09    0A    0B    0C    0D    0E    0F
-    0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 
-    0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 
-    0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 
-    0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 
-    0xFF, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 
-    0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 
-    0xFF, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 
-    0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 
+    0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
+    0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
+    0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
+    0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
+    0xFF, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
+    0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
+    0xFF, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
+    0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
 };
 
 LPCTSTR HexaAlphabetUpper = _T("0123456789ABCDEF");
@@ -32,7 +32,7 @@ LPCTSTR HexaAlphabetUpper = _T("0123456789ABCDEF");
 static bool IsPossibleFileId(LPCTSTR szFileName)
 {
     size_t nLength = _tcslen(szFileName);
-                     
+
     // File ID has 15 characters, object ID has 32
     if(nLength != 16 && nLength != 32)
         return false;
@@ -89,7 +89,7 @@ DWORD StrToInt(LPCTSTR szString, LPTSTR * szEnd, int nRadix)
         if(nValue < nSaveValue)
             break;
     }
-    
+
     if(szEnd != NULL)
         *szEnd = (LPTSTR)szString;
     return nValue;
@@ -161,7 +161,7 @@ DWORD DlgText2Hex32(HWND hDlg, UINT nIDCtrl, PDWORD pValue)
     {
         // Retrieve the window text
         GetWindowText(hWndChild, szText, _countof(szText));
-    
+
         // Attempt to convert the value
         dwErrCode = Text2Hex32(szText, pValue);
         if(dwErrCode != ERROR_SUCCESS)
@@ -245,7 +245,7 @@ DWORD DlgText2HexPtr(HWND hDlg, UINT nIDCtrl, PDWORD_PTR pValue)
     {
         // Retrieve the window text
         GetWindowText(hWndChild, szText, _countof(szText));
-    
+
         // Attempt to convert the value
         dwErrCode = Text2HexPtr(szText, pValue);
         if(dwErrCode != ERROR_SUCCESS)
@@ -315,7 +315,7 @@ DWORD DlgText2Hex64(HWND hDlg, UINT nIDCtrl, PLONGLONG pValue)
     {
         // Retrieve the window text
         GetWindowText(hWndChild, szText, _countof(szText));
-    
+
         // Attempt to convert the value
         dwErrCode = Text2Hex64(szText, pValue);
         if(dwErrCode != ERROR_SUCCESS)
@@ -448,7 +448,7 @@ LPTSTR FindNextPathSeparator(LPTSTR szPathPart)
     // Find next slash, backslash or end of string
     while(szPathPart[0] != 0 && szPathPart[0] != _T('\\') && szPathPart[0] != _T('/'))
         szPathPart++;
-    
+
     return szPathPart;
 }
 
@@ -462,7 +462,7 @@ ULONG GetEaEntrySize(PFILE_FULL_EA_INFORMATION EaInfo)
 
     //
     // The length of the item must be calculated very exactly.
-    // No additional bytes (except for default alignment of 
+    // No additional bytes (except for default alignment of
     // FILE_FULL_EA_INFORMATION structure) is allowed.
     //
 
@@ -664,7 +664,7 @@ void TreeView_CopyToClipboard(HWND hWndTree)
 
 int OnTVKeyDown_CopyToClipboard(HWND /* hDlg */, LPNMTVKEYDOWN pNMTVKeyDown)
 {
-    // On Ctrl+C, copy the text to clipboard 
+    // On Ctrl+C, copy the text to clipboard
     if(pNMTVKeyDown->wVKey == 'C' && GetAsyncKeyState(VK_CONTROL) < 0)
     {
         TreeView_CopyToClipboard(pNMTVKeyDown->hdr.hwndFrom);
@@ -901,7 +901,7 @@ void SetResultInfo(HWND hDlg, DWORD dwFlags, ...)
 
     //
     // 1) RSI_LAST_ERROR: DWORD dwErrCode
-    // 
+    //
 
     if(dwFlags & RSI_LAST_ERROR)
     {
@@ -1077,7 +1077,7 @@ void SetResultInfo(HWND hDlg, DWORD dwFlags, ...)
 
         if((hWndChild = GetDlgItem(hDlg, IDC_INFORMATION)) != NULL)
         {
-            LPCTSTR szNtCreateResult[] = 
+            LPCTSTR szNtCreateResult[] =
             {
                 _T("FILE_SUPERSEDED"),
                 _T("FILE_OPENED"),
@@ -1246,7 +1246,7 @@ static PATH_TYPE GetDosPathType(LPCWSTR szFileNameW)
                 return PathTypeNativePrefix;
             if(szFileNameW[2] == '.' && szFileNameW[3] == '\\')
                 return PathTypeNativePrefix;
-            
+
             // Network paths begin with "\\"
             return PathTypeNetwork;
         }
@@ -1322,7 +1322,7 @@ BOOLEAN IsNativeName(LPCWSTR szFileName)
         // Go until we find the second backslash
         while(szFileName[0] != 0 && szFileName[0] != L'\\')
             szFileName++;
-        
+
         // Set the length to the UNICODE_STRING
         FileName.MaximumLength =
         FileName.Length = (USHORT)((szFileName - FileName.Buffer) * sizeof(WCHAR));
@@ -1413,14 +1413,14 @@ BOOLEAN Win32PathNameToNtPathName(PUNICODE_STRING FileName, LPCWSTR szFileNameW)
         return FALSE;
 
     // Copy the prefix, if any
-    if(szNtPrefix != NULL && cbNtPrefix != 0) 
+    if(szNtPrefix != NULL && cbNtPrefix != 0)
         memcpy(FileName->Buffer, szNtPrefix, cbNtPrefix);
 
     // Copy the name itself. Also terminate the name with zero
     // (i.e. the same like RtlDosPathNameToNtPathName_U)
     memcpy(FileName->Buffer + (cbNtPrefix / sizeof(WCHAR)), szFileNameW, cbFileName);
     FileName->Buffer[FileName->Length / sizeof(WCHAR)] = 0;
-    
+
     // Change slashes to backslashes
 //  szBufferEnd = FileName->Buffer + (FileName->Length / sizeof(WCHAR));
 //  for(szBuffer = FileName->Buffer; szBuffer < szBufferEnd; szBuffer++)
@@ -1435,7 +1435,7 @@ BOOLEAN Win32PathNameToNtPathName(PUNICODE_STRING FileName, LPCWSTR szFileNameW)
 // Both DOS names and native  NT names are processed properly
 // Buffer in "FileName" needs to be freed using FreeFileNameString(&FileName)
 NTSTATUS FileNameToUnicodeString(
-    PUNICODE_STRING FileName,    
+    PUNICODE_STRING FileName,
     LPCTSTR szFileName)
 {
     UNICODE_STRING UnicodeName = {0, 0, NULL};
@@ -1478,7 +1478,7 @@ NTSTATUS FileNameToUnicodeString(
     //
     // From the above reasons, we won't use the RtlDosPathNameToNtPathName_U.
     //
-    
+
     // Convert Win32 name using GlobalRoot to native name
     // ("\\?\GlobalRoot\Device\xxxx" to "\Device\xxxx")
     szFileNameW += IsGlobalRootPrefix(szFileNameW);
@@ -1549,7 +1549,7 @@ NTSTATUS ConvertToNtName(HWND hDlg, UINT nIDEdit)
                     FreeFileNameString(&NtName);
                 }
             }
-            
+
             delete [] szFileName;
         }
     }
@@ -1859,9 +1859,9 @@ NTSTATUS NtDeleteReparsePoint(HANDLE ObjectHandle)
     NTSTATUS Status;
     ULONG Length = sizeof(ReparseBuffer);
 
-    // Query the reparse point 
+    // Query the reparse point
     pReparseData = (PREPARSE_DATA_BUFFER)ReparseBuffer;
-    Status = NtFsControlFile(ObjectHandle, 
+    Status = NtFsControlFile(ObjectHandle,
                              NULL,
                              NULL,
                              NULL,
@@ -1989,7 +1989,7 @@ ULONG RtlComputeCrc32(ULONG InitialCrc, PVOID Buffer, ULONG Length)
         DataPtr++;
         Length--;
     }
-    
+
     return ~Crc32;
 }
 

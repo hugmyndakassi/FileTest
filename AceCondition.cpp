@@ -120,7 +120,7 @@ static DWORD EncodeAttributeName(
             szAttributeName[nCharsCopied++] = HexaAlphabetLower[(chCharacter >> 0x04) & 0x0F];
             szAttributeName[nCharsCopied++] = HexaAlphabetLower[(chCharacter >> 0x00) & 0x0F];
         }
-        
+
         // Non-encoded chars are copied as-is
         else
         {
@@ -447,7 +447,7 @@ static DWORD GetPrintableOperandValue(
             *szOperandValue++ = _T('\"');
             memcpy(szOperandValue, Condition + 5, cbDataSize);
             szOperandValue[cbDataSize / sizeof(WCHAR)] = _T('\"');
-            
+
             // Increment the number of bytes processed and return
             MoveBy[0] = MoveBy[0] + cbDataSize;
             break;

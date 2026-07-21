@@ -97,7 +97,7 @@ static NTSTATUS NtTakeOwnershipObject(HANDLE ObjectHandle)
                                &TokenHandle);
     if(NT_SUCCESS(Status))
     {
-        NtQueryInformationToken(TokenHandle, 
+        NtQueryInformationToken(TokenHandle,
                                 TokenUser,
                                 pTokenUser,
                                 cbTokenUser,
@@ -111,7 +111,7 @@ static NTSTATUS NtTakeOwnershipObject(HANDLE ObjectHandle)
         pTokenUser = (PTOKEN_USER)RtlAllocateHeap(RtlProcessHeap(), 0, cbTokenUser);
         if(pTokenUser != NULL)
         {
-            Status = NtQueryInformationToken(TokenHandle, 
+            Status = NtQueryInformationToken(TokenHandle,
                                              TokenUser,
                                              pTokenUser,
                                              cbTokenUser,
@@ -185,7 +185,7 @@ static NTSTATUS NtSetObjectAccessForEveryone(
     SECURITY_DESCRIPTOR sd;
     NTSTATUS Status;
     ULONG cbAclLength = 0;
-    PSID pSidEveryone = NULL; 
+    PSID pSidEveryone = NULL;
     PACL pAcl = NULL;
 
     // Get the SID of Everyone
@@ -308,7 +308,7 @@ static NTSTATUS NtSetFileAccessToEveryone(POBJECT_ATTRIBUTES PtrObjectAttributes
             NtSetInformationFile(FileHandle,
                                 &IoStatus,
                                 &BasicInfo,
-                                 sizeof(FILE_BASIC_INFORMATION), 
+                                 sizeof(FILE_BASIC_INFORMATION),
                                  FileBasicInformation);
             NtClose(FileHandle);
         }
@@ -407,7 +407,7 @@ static NTSTATUS NtDeleteFsObject(
                                         FileBasicInformation);
 
         // If the opened object has reparse point on it,
-        // we need to delete the reparse point first 
+        // we need to delete the reparse point first
         if(NT_SUCCESS(Status) && (pFileInfo->FileAttributes & FILE_ATTRIBUTE_REPARSE_POINT))
         {
             Status = NtDeleteReparsePoint(ObjectHandle);
@@ -580,7 +580,7 @@ static int UpdateDialogButtons(HWND hDlg)
 
     // Enable/Disable handle-based buttons
     bEnable = IsHandleValid(pData->hFile) ? TRUE : FALSE;
-    EnableDlgItems(hDlg, bEnable, 
+    EnableDlgItems(hDlg, bEnable,
                          IDC_FLUSH_FILE_BUFFERS,
                          IDC_REQUEST_OPLOCK_MENU,
                          IDC_BREAK_ACKNOWLEDGE_1,
@@ -708,7 +708,7 @@ static int OnDeltaPos(HWND hDlg, NMUPDOWN * pNMHDR)
         Hex2DlgText64(hDlg, IDC_BYTE_OFFSET, Uint64.QuadPart);
         return TRUE;
     }
-    
+
     if(pNMHDR->hdr.idFrom == IDC_LENGTH_SPIN)
     {
         DlgText2Hex32(hDlg, IDC_LENGTH, &Uint32);
@@ -950,7 +950,7 @@ static int OnFileIdUse(HWND hDlg, UINT nIDEdit)
     GetDlgItemText(hDlg, nIDEdit, szFileId, _countof(szFileId));
     NtUseFileId(hDlg, szFileId);
     return TRUE;
-}    
+}
 
 static int OnObjectIdMoreClick(HWND hDlg)
 {
@@ -970,7 +970,7 @@ static int OnObjectIdMoreClick(HWND hDlg)
     if(nAction == IDCANCEL)
         return TRUE;
     SaveDialog(hDlg);
-    
+
     // Use the proper desired access
     // Note that we also need restore privilege in order to succeed
     if(nAction == IDC_SET_OBJECT_ID || nAction == IDC_DELETE_OBJECT_ID)
@@ -984,7 +984,7 @@ static int OnObjectIdMoreClick(HWND hDlg)
     if(hFile == INVALID_HANDLE_VALUE)
         dwErrCode = GetLastError();
 
-    // Perform an action specific to 
+    // Perform an action specific to
     if(dwErrCode == ERROR_SUCCESS)
     {
         switch(nAction)
@@ -1012,7 +1012,7 @@ static int OnObjectIdMoreClick(HWND hDlg)
                     dwErrCode = GetLastError();
                 }
                 break;
-            
+
             case IDC_SET_OBJECT_ID:
 
                 GetDlgItemText(hDlg, IDC_OBJECT_ID, szObjectID, _countof(szObjectID));
@@ -1175,7 +1175,7 @@ static int OnEncryptFile(HWND hDlg, UINT nIDCtrl)
 
     switch (nIDCtrl)
     {
-        case IDC_ENCRYPT_FILE:            
+        case IDC_ENCRYPT_FILE:
             // Perform encryption
             if(!EncryptFile(pData->szFileName1))
                 dwErrCode = GetLastError();
@@ -1204,7 +1204,7 @@ static int OnSendAsynchronousFsctl(
     TApcEntry * pApc;
     NTSTATUS Status = STATUS_INSUFFICIENT_RESOURCES;
 
-    // Create new APC entry 
+    // Create new APC entry
     pApc = (TApcEntry *)CreateApcEntry(pData, APC_TYPE_FSCTL, OutputBufferSize);
     if(pApc != NULL)
     {
@@ -1264,7 +1264,7 @@ static int OnSendRequestOplock(HWND hDlg, bool bRequestOplock)
 
     // Prepare the input buffer
     // Note that value of 0 in In.Flags causes BSOD in FastFat.sys
-    // 
+    //
     memset(&In, 0, sizeof(REQUEST_OPLOCK_INPUT_BUFFER));
     In.StructureLength = sizeof(REQUEST_OPLOCK_INPUT_BUFFER);
     In.StructureVersion = REQUEST_OPLOCK_CURRENT_VERSION;
@@ -1369,7 +1369,7 @@ static int OnApc(HWND hDlg, LPARAM lParam)
     {
         // Show the result in the result UI
         SetResultInfo(hDlg, RSI_NTSTATUS, pApc->IoStatus.Status);
-       
+
         // If the APC was an oplock APC, also show the result
         switch(pApc->UserParam)
         {
