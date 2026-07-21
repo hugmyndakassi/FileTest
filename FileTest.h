@@ -23,9 +23,9 @@
 #include <tchar.h>
 #include <stdio.h>
 
-#define WIN32_NO_STATUS 
+#define WIN32_NO_STATUS
 #include <windows.h>
-#undef WIN32_NO_STATUS 
+#undef WIN32_NO_STATUS
 #include <windowsx.h>
 #include <ShlObj.h>
 #include <winioctl.h>
@@ -136,7 +136,7 @@ struct TContextMenu
     HMENU hMenu;                            // Pre-loaded HMENU
 };
 
-// Common structure for data blob 
+// Common structure for data blob
 struct TDataBlob
 {
     DWORD SetLength(SIZE_T NewLength);
@@ -342,7 +342,7 @@ struct TInfoData
 {
     int                    InfoClass;       // Value for NtSetInformationFile
     LPCTSTR                szInfoClass;     // Text for the value
-    LPCTSTR                szStructName;    // Name of the input/output structure 
+    LPCTSTR                szStructName;    // Name of the input/output structure
     TStructMember        * pStructMembers;  // Description of the data structure
                                             // (NULL = not implemented)
     BOOL                   bIsChain;        // if TRUE, it is a chain of structures
@@ -376,7 +376,7 @@ typedef HANDLE (WINAPI * CREATETRANSACTION)(
 typedef BOOL (WINAPI * SETCURRENTTRANSACTION)(
     HANDLE hTransaction
     );
-    
+
 typedef BOOL (WINAPI * COMMITTRANSACTION)(
     HANDLE hTransaction
     );
@@ -408,7 +408,7 @@ typedef HANDLE (WINAPI * CREATEFILETRANSACTED)(
     DWORD dwFlagsAndAttributes,
     HANDLE hTemplateFile,
     HANDLE hTransaction,
-    PUSHORT pusMiniVersion, 
+    PUSHORT pusMiniVersion,
     PVOID  lpExtendedParameter);
 
 typedef BOOL (WINAPI * CREATEHARDLINK)(

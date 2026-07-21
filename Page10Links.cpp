@@ -157,7 +157,7 @@ static int SetReparseDataSubstName(PREPARSE_DATA_BUFFER ReparseData, LPTSTR szBa
     memmove(szBaseBuffer, szSubstName, (cchSubstName + 1) * sizeof(WCHAR));
     ReparseData->MountPointReparseBuffer.SubstituteNameOffset = 0;
     ReparseData->MountPointReparseBuffer.SubstituteNameLength = (USHORT)(cchSubstName * sizeof(WCHAR));
-    
+
     // Fix the reparse data size
     return UpdateReparseDataLength(ReparseData, szBaseBuffer);
 }
@@ -169,7 +169,7 @@ static int SetReparseDataPrintName(PREPARSE_DATA_BUFFER ReparseData, LPTSTR szBa
     // Copy the print name
     memmove((LPBYTE)szBaseBuffer + ReparseData->MountPointReparseBuffer.PrintNameOffset, szPrintName, cbPrintName + sizeof(WCHAR));
     ReparseData->MountPointReparseBuffer.PrintNameLength = (USHORT)cbPrintName;
-    
+
     // Fix the reparse data size
     return UpdateReparseDataLength(ReparseData, szBaseBuffer);
 }
@@ -484,7 +484,7 @@ LPTSTR GetFullHardLinkName(PFILE_LINK_ENTRY_INFORMATION pLinkInfo, LPTSTR szFile
                              FILE_SYNCHRONOUS_IO_ALERT);
         FreeFileNameString(&FileName);
     }
-    
+
     if(NT_SUCCESS(Status))
     {
         // Now open the target directory by ID
@@ -614,7 +614,7 @@ static NTSTATUS TreeView_InsertHsm(HWND hWndChild, HTREEITEM hParent, PREPARSE_D
             // Insert the flags and length
             TreeView_InsertInteger(hWndChild, hItem, _T("Flags"), _T("0x%04X"), HsmReparseData->HsmReparseBufferRaw.Flags);
             TreeView_InsertInteger(hWndChild, hItem, _T("Length"), _T("0x%04X"), HsmReparseData->HsmReparseBufferRaw.Length);
-            
+
             // Insert the FileData substructure
             hItem = TreeView_InsertString(hWndChild, hItem, _T("HSM_DATA"));
 
@@ -695,7 +695,7 @@ static int OnInitDialog(HWND hDlg, LPARAM lParam)
     // We need this in order to create symbolic link
     EnablePrivilege(_T("SeCreateSymbolicLinkPrivilege"));
 
-    // Congigure the right-arrow image 
+    // Congigure the right-arrow image
     AttachIconToEdit(hDlg, GetDlgItem(hDlg, IDC_SYMLINK_TARGET), MAKEINTRESOURCE(IDI_RIGHT_ARROW));
 
     // Default number of characters for combo box's edit field is 46.
@@ -715,7 +715,7 @@ static int OnInitDialog(HWND hDlg, LPARAM lParam)
     // Initiate updating of the view
     PostMessage(hDlg, WM_UPDATE_VIEW, 0, 0);
     return TRUE;
-}                                                                         
+}
 
 static int OnSetActive(HWND /* hDlg */)
 {
@@ -858,7 +858,7 @@ static int OnDoubleClick(HWND hDlg, LPNMHDR pNMHDR)
     {
         // Retrieve the item param
         lParam = TreeView_GetItemParam(pNMHDR->hwndFrom, TreeView_GetSelection(pNMHDR->hwndFrom));
-            
+
         // If reparse tag, we can give the user a choice
         if(lParam == ITEM_TYPE_REPARSE_TAG)
         {
@@ -1154,7 +1154,7 @@ static int OnHardlinkCreate(HWND hDlg)
         Status = FileNameToUnicodeString(&FileName, szFileName);
         if(NT_SUCCESS(Status))
         {
-            Status = NtOpenFile(&hFile, 
+            Status = NtOpenFile(&hFile,
                                  MAXIMUM_ALLOWED,
                                 &ObjAttr,
                                 &IoStatus,
@@ -1219,7 +1219,7 @@ static int OnHardlinkQuery(HWND hDlg)
     Status = FileNameToUnicodeString(&FileName, szFileName);
     if(NT_SUCCESS(Status))
     {
-        Status = NtOpenFile(&hFile, 
+        Status = NtOpenFile(&hFile,
                              FILE_READ_ATTRIBUTES,
                             &ObjAttr,
                             &IoStatus,
@@ -1282,7 +1282,7 @@ static int OnHardlinkQuery(HWND hDlg)
                 }
             }
         }
-        
+
         // Free the buffer and close file handle
         if(pLinksInfo != NULL)
             HeapFree(g_hHeap, 0, pLinksInfo);
@@ -1567,7 +1567,7 @@ INT_PTR CALLBACK PageProc10(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 
         case WM_UPDATE_VIEW:
             OnUpdateView(hDlg);
-            return TRUE;        
+            return TRUE;
 
         case WM_COMMAND:
             return OnCommand(hDlg, HIWORD(wParam), LOWORD(wParam));

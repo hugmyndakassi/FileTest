@@ -105,7 +105,7 @@ static TFlagInfo ObjAttrFlagsValues[] =
     FLAGINFO_BITV(OBJ_NO_RIGHTS_UPGRADE),
     FLAGINFO_BITV(OBJ_PERMANENT),
     FLAGINFO_BITV(OBJ_EXCLUSIVE),
-    FLAGINFO_BITV(OBJ_CASE_INSENSITIVE),    
+    FLAGINFO_BITV(OBJ_CASE_INSENSITIVE),
     FLAGINFO_BITV(OBJ_OPENIF),
     FLAGINFO_BITV(OBJ_OPENLINK),
     FLAGINFO_BITV(OBJ_KERNEL_HANDLE),
@@ -160,7 +160,7 @@ static NTSTATUS MyCreateDirectory(TFileTestData * pData, POBJECT_ATTRIBUTES pObj
                            FILE_DIRECTORY_FILE,
                            NULL,
                            0);
-    
+
     if(DirectoryHandle != NULL)
         NtClose(DirectoryHandle);
 
@@ -309,7 +309,7 @@ static DWORD SaveDialog(HWND hDlg)
     UpdateUseRelativeFile(hDlg);
     return ERROR_SUCCESS;
 }
-                                                             
+
 //-----------------------------------------------------------------------------
 // Message handlers
 
@@ -373,7 +373,7 @@ static int OnInitDialog(HWND hDlg, LPARAM lParam)
         }
     }
 
-    // If we have a tooltip window, init tooltips 
+    // If we have a tooltip window, init tooltips
     if(IsPropSheetPageDialog(hDlg))
     {
         g_Tooltip.AddToolTip(hDlg, IDC_RELATIVE_FILE, IDS_TIP_RELATIVE_FILE);
@@ -619,7 +619,7 @@ static int OnMakeDirectoryClick(HWND hDlg)
             {
                 // Find either next backslash or end of string
                 szTemp = FindNextPathSeparator(szPathPart);
-                
+
                 // Create the directory part
                 FileName.Length = (USHORT)((szTemp - szDirectory) * sizeof(WCHAR));
                 Status = MyCreateDirectory(pData, &ObjAttr, &IoStatus);
@@ -731,14 +731,14 @@ static int OnNtCreateFileClick(HWND hDlg)
             }
 
             // Set the object ID to the UNICODE_STRING
-            FileName.MaximumLength = 
+            FileName.MaximumLength =
             FileName.Length = (USHORT)cbObjectID;
             FileName.Buffer = (PWSTR)ObjectID;
         }
 
         ZeroMemory(&IoStatus, sizeof(IO_STATUS_BLOCK));
         InitializeObjectAttributes(&ObjAttr, &FileName, pData->OpenFile.dwOA_Attributes, pData->hDirectory, NULL);
-           
+
         // Invoke breakpoint if the user wants to
         if(IsDlgButtonChecked(hDlg, IDC_BREAKPOINT) == BST_CHECKED)
         {
@@ -789,7 +789,7 @@ static int OnNtCloseClick(HWND hDlg)
     if(IsHandleValid(pData->hFile))
         Status = NtClose(pData->hFile);
     pData->hFile = NULL;
-    
+
     // Close directory handle last
     if(IsHandleValid(pData->hDirectory))
         NtClose(pData->hDirectory);
@@ -846,7 +846,7 @@ static int OnCommand(HWND hDlg, UINT nNotify, UINT nIDCtrl)
 
             case IDC_FILE_ATTRIBUTES_BROWSE:
                 return OnFileAttributesClick(hDlg);
-        
+
             case IDC_SHARE_ACCESS_BROWSE:
                 return OnShareAccessClick(hDlg);
 

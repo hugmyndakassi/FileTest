@@ -211,7 +211,7 @@ TStructMember FileFullDirectoryInformationMembers[] =
 };
 
 TStructMember FileBothDirectoryInformationMembers[] =
-{                                            
+{
     {_T("NextEntryOffset"), TYPE_UINT32,     sizeof(ULONG)},
     {_T("FileIndex"),       TYPE_UINT32,     sizeof(ULONG)},
     {_T("CreationTime"),    TYPE_FILETIME,   sizeof(LARGE_INTEGER)},
@@ -307,14 +307,14 @@ TStructMember FileLinkInformationMembers[] =
     {NULL, TYPE_NONE, 0}
 };
 
-TStructMember FileLinkEntryMembers[] = 
+TStructMember FileLinkEntryMembers[] =
 {
     {_T("NextEntryOffset"), TYPE_UINT32,  sizeof(LARGE_INTEGER)},  // alignment
     {_T("ParentFileId"),    TYPE_FILEID64,sizeof(LARGE_INTEGER)},
     {_T("FileNameLength"),  TYPE_UINT32,  sizeof(ULONG)},
     {_T("FileName"),        TYPE_WNAME_L32W, FIELD_OFFSET(FILE_LINK_ENTRY_INFORMATION, FileNameLength)},
     {NULL, TYPE_NONE, 0}
-}; 
+};
 
 TStructMember FileNamesInformationMembers[] =
 {
@@ -695,7 +695,7 @@ TStructMember FileSfioVolumeInformationMembers[] =
 };
 
 TStructMember FileHardLinkInformationMembers[] =
-{   
+{
     {_T("BytesNeeded"),     TYPE_UINT32, sizeof(ULONG)},
     {_T("EntriesReturned"), TYPE_UINT32, sizeof(ULONG)},
     {_T("Entry"),           TYPE_CHAINED_STRUCT, 0, NULL, FileLinkEntryMembers},
@@ -703,7 +703,7 @@ TStructMember FileHardLinkInformationMembers[] =
 };
 
 TStructMember FileProcessIdsUsingFileInformationMembers[] =
-{   
+{
     {_T("NumberOfProcessIdsInList"), TYPE_UINT32, sizeof(ULONG)},
     {_T("<padding>"),                TYPE_PADDING, sizeof(HANDLE)},
     {_T("ProcessIdList"),            TYPE_ARRAY_PROCESS, FIELD_OFFSET(FILE_PROCESS_IDS_USING_FILE_INFORMATION, NumberOfProcessIdsInList)},
@@ -872,7 +872,7 @@ TStructMember FileIdExtdBothDirectoryInformationMembers[] =
     {NULL}
 };
 
-TFlagInfo FileDispositionInformationExValues[] = 
+TFlagInfo FileDispositionInformationExValues[] =
 {
 //  FLAGINFO_BITV(FILE_DISPOSITION_DO_NOT_DELETE),               // Zero; not an actual flag
     FLAGINFO_BITV(FILE_DISPOSITION_DELETE),
@@ -948,7 +948,7 @@ TStructMember FileStatInformationMembers[] =
     {_T("ReparseTag"),      TYPE_UINT32,   sizeof(ULONG)},
     {_T("NumberOfLinks"),   TYPE_UINT32,   sizeof(ULONG)},
     {_T("EffectiveAccess"), TYPE_FLAG32,   sizeof(ACCESS_MASK), NULL, {(TStructMember *)AccessMaskValues}},
-    { NULL, TYPE_NONE, 0 }                                
+    { NULL, TYPE_NONE, 0 }
 };
 
 TStructMember FileMemoryPartitionInformationMembers[] =
@@ -1053,7 +1053,7 @@ TStructMember FileKnownFolderInformationMembers[] =
 #define FileLinkInformationExBypassAccessCheckMembers   FileLinkInformationExMembers
 #define FileCaseSensitiveInformationForceAccessCheckMembers  FileCaseSensitiveInformationMembers
 
-TInfoData FileInfoData[] =                                                  
+TInfoData FileInfoData[] =
 {
     FILE_INFO_READONLY(FileDirectoryInformation,                FILE_DIRECTORY_INFORMATION,                  TRUE),
     FILE_INFO_READONLY(FileFullDirectoryInformation,            FILE_FULL_DIR_INFORMATION,                   TRUE),
@@ -1145,7 +1145,7 @@ TInfoData FileInfoData[] =
 // Description of data structures for FS info classes
 
 TStructMember FileFsVolumeInformationMembers[] =
-{   
+{
     {_T("VolumeCreationTime"), TYPE_FILETIME, sizeof(LARGE_INTEGER)},
     {_T("VolumeSerialNumber"), TYPE_UINT32, sizeof(ULONG)},
     {_T("VolumeLabelLength"),  TYPE_UINT32, sizeof(ULONG)},
@@ -1155,7 +1155,7 @@ TStructMember FileFsVolumeInformationMembers[] =
 };
 
 TStructMember FileFsLabelInformationMembers[] =
-{   
+{
     {_T("VolumeLabelLength"),  TYPE_UINT32,  sizeof(ULONG)},
     {_T("VolumeLabel"),        TYPE_WNAME_L32B, FIELD_OFFSET(FILE_FS_LABEL_INFORMATION, VolumeLabelLength)},
     {NULL, TYPE_NONE, 0}
@@ -1163,7 +1163,7 @@ TStructMember FileFsLabelInformationMembers[] =
 
 
 TStructMember FileFsSizeInformationMembers[] =
-{   
+{
     {_T("TotalAllocationUnits"),        TYPE_UINT64, sizeof(LARGE_INTEGER)},
     {_T("AvailableAllocationUnits"),    TYPE_UINT64, sizeof(LARGE_INTEGER)},
     {_T("SectorsPerAllocationUnit"),    TYPE_UINT32, sizeof(ULONG)},
@@ -1194,14 +1194,14 @@ TFlagInfo FileDeviceCharacteristicsValues[] =
 };
 
 TStructMember FileFsDeviceInformationMembers[] =
-{   
+{
     {_T("DeviceType"),           TYPE_UINT32, sizeof(ULONG)},
     {_T("Characteristics"),      TYPE_FLAG32, sizeof(ULONG), NULL, {(TStructMember *)FileDeviceCharacteristicsValues}},
     {NULL, TYPE_NONE, 0}
 };
 
 TStructMember FileFsAttributeInformationMembers[] =
-{   
+{
     {_T("FileSystemAttributes"),       TYPE_FLAG32, sizeof(ULONG), NULL, {(TStructMember *)FileSystemAttributesValues}},
     {_T("MaximumComponentNameLength"), TYPE_UINT32, sizeof(ULONG)},
     {_T("FileSystemNameLength"),       TYPE_UINT32, sizeof(ULONG)},
@@ -1224,7 +1224,7 @@ TFlagInfo FileSystemControlFlagValues[] =
 };
 
 TStructMember FileFsControlInformationMembers[] =
-{   
+{
     {_T("FreeSpaceStartFiltering"),    TYPE_UINT64, sizeof(LARGE_INTEGER)},
     {_T("FreeSpaceThreshold"),         TYPE_UINT64, sizeof(LARGE_INTEGER)},
     {_T("FreeSpaceStopFiltering"),     TYPE_UINT64, sizeof(LARGE_INTEGER)},
@@ -1236,7 +1236,7 @@ TStructMember FileFsControlInformationMembers[] =
 
 
 TStructMember FileFsFullSizeInformationMembers[] =
-{   
+{
     {_T("TotalAllocationUnits"),           TYPE_UINT64, sizeof(LARGE_INTEGER)},
     {_T("CallerAvailableAllocationUnits"), TYPE_UINT64, sizeof(LARGE_INTEGER)},
     {_T("ActualAvailableAllocationUnits"), TYPE_UINT64, sizeof(LARGE_INTEGER)},
@@ -1247,7 +1247,7 @@ TStructMember FileFsFullSizeInformationMembers[] =
 
 
 TStructMember FileFsObjectIdInformationMembers[] =
-{   
+{
     {_T("ObjectId"),     TYPE_GUID,         sizeof(UCHAR[16])},
     {_T("ExtendedInfo"), TYPE_ARRAY8_FIXED, sizeof(UCHAR[48])},
     {NULL, TYPE_NONE, 0}
@@ -1255,7 +1255,7 @@ TStructMember FileFsObjectIdInformationMembers[] =
 
 
 TStructMember FileFsDriverPathInformationMembers[] =
-{   
+{
     {_T("DriverInPath"),     TYPE_BOOLEAN, sizeof(ULONG)},
     {_T("DriverNameLength"), TYPE_UINT32,  sizeof(ULONG)},
     {_T("DriverName"),       TYPE_WNAME_L32B, FIELD_OFFSET(FILE_FS_DRIVER_PATH_INFORMATION, DriverNameLength)},
@@ -1264,7 +1264,7 @@ TStructMember FileFsDriverPathInformationMembers[] =
 
 
 TStructMember FileFsVolumeFlagsInformationMembers[] =
-{   
+{
     {_T("Flags"),            TYPE_UINT32, sizeof(ULONG)},
     {NULL, TYPE_NONE, 0}
 };
@@ -1280,7 +1280,7 @@ TFlagInfo FileSystemSectorFlagValues[] =
 };
 
 TStructMember FileFsSectorSizeInformationMembers[] =
-{   
+{
     {_T("LogicalBytesPerSector"),               TYPE_UINT32, sizeof(ULONG)},
     {_T("PhysicalBytesPerSectorForAtomicity"),  TYPE_UINT32, sizeof(ULONG)},
     {_T("PhysicalBytesPerSectorForPerformance"), TYPE_UINT32, sizeof(ULONG)},
@@ -1323,7 +1323,7 @@ TStructMember FileFsFullSizeInformationExMembers[] =
     {NULL, TYPE_NONE, 0}
 };
 
-TInfoData FsInfoData[] = 
+TInfoData FsInfoData[] =
 {
     FILE_INFO_EDITABLE(FileFsVolumeInformation,        FILE_FS_VOLUME_INFORMATION,           FALSE),
     FILE_INFO_EDITABLE(FileFsLabelInformation,         FILE_FS_LABEL_INFORMATION,            FALSE),
@@ -1477,7 +1477,7 @@ static LPTSTR CreateFullName(LPCTSTR szDirectory, LPCWSTR szPlainName, ULONG cbP
     size_t cchLength;
 
     // Allocate buffer
-    cchLength = cchDirectory + 1 + (cbPlainName / sizeof(WCHAR)) + 1; 
+    cchLength = cchDirectory + 1 + (cbPlainName / sizeof(WCHAR)) + 1;
     szFileName = szFilePtr = new TCHAR[cchLength];
     if(szFileName != NULL)
     {
@@ -1497,7 +1497,7 @@ static LPTSTR CreateFullName(LPCTSTR szDirectory, LPCWSTR szPlainName, ULONG cbP
         memcpy(szFilePtr, szPlainName, cbPlainName);
         szFilePtr[cbPlainName / sizeof(TCHAR)] = 0;
     }
-    
+
     return szFileName;
 }
 
@@ -1507,7 +1507,7 @@ static void FillComboBoxFiltered(HWND hWndCombo, TInfoData * pInfoList, LPCTSTR 
 
     // Disable redrawing and remove all items
     EnableRedraw(hWndCombo, FALSE);
-    
+
     // Delete all items
     while(ComboBox_DeleteString(hWndCombo, 0) > 0);
 
@@ -1566,7 +1566,7 @@ static int SearchItemList(TInfoData * pInfoList, LPCTSTR szEditText, int nTextLe
             }
         }
     }
-        
+
     return -1;
 }
 */
@@ -1900,7 +1900,7 @@ static int DataToItemText(TStructMember * pMember, LPTSTR szBuffer, size_t nMaxC
 
             // We have to take the whole structure and get the length
             // (the name doesn't have to be zero terminated)
-            FileInfo = (PFILE_BOTH_DIR_INFORMATION)pMember->pbStructPtr;            
+            FileInfo = (PFILE_BOTH_DIR_INFORMATION)pMember->pbStructPtr;
 
             // Process the file name as non-null-terminated
             // string with variable length
@@ -2716,7 +2716,7 @@ VOID CALLBACK TimerTooltipProc(HWND hDlg, UINT /* uMsg */, UINT_PTR /* idEvent *
         DestroyWindow(hToolTip);
     hToolTip = NULL;
 
-    // Kill the timer 
+    // Kill the timer
     if(nTimerTooltip != 0)
         KillTimer(hDlg, nTimerTooltip);
     nTimerTooltip = 0;
@@ -2959,7 +2959,7 @@ static int OnShowDateFormats(HWND hDlg, HWND hTreeItem, HTREEITEM hItem)
     szText = new TCHAR[nMaxChars + 1];
     if(szText == NULL)
         return TRUE;
-  
+
     // Prepare the text for the tooltip
     LoadString(g_hInst, IDS_BAD_DATETIME_FORMAT, szTitle, _countof(szTitle));
     LoadString(g_hInst, IDS_DATE_FORMAT_PREFIX, szDateFormatPrefix, _countof(szDateFormatPrefix));
@@ -3005,7 +3005,7 @@ static int OnShowDateFormats(HWND hDlg, HWND hTreeItem, HTREEITEM hItem)
         SendMessage(hToolTip, TTM_TRACKACTIVATE, TRUE, (LPARAM)&ti);
 
         // Set the tooltip timer
-        nTimerTooltip = SetTimer(hDlg, WM_TIMER_TOOLTIP, 10000, TimerTooltipProc); 
+        nTimerTooltip = SetTimer(hDlg, WM_TIMER_TOOLTIP, 10000, TimerTooltipProc);
     }
 
     // Free buffers and exit
@@ -3108,7 +3108,7 @@ static int OnEndLabelEdit(HWND hDlg, NMTVDISPINFO * pTVDispInfo)
         {
             HTREEITEM hParentItem;
 
-            // We have to reload all items at the same level, because 
+            // We have to reload all items at the same level, because
             // the ItemTextToData might have changed more than one item data
             // (Example: variable length strings editation change also the length)
             hParentItem = TreeView_GetNextItem(hTreeView, pTVDispInfo->item.hItem, TVGN_PARENT);
@@ -3184,8 +3184,8 @@ static int OnDoubleClick(HWND hDlg, LPNMHDR pNMHDR)
                                                 pliValue->HighPart,
                                                 pliValue->LowPart,
                                                 szFileName);
-                    
-                    // Apply the item text to the tree view                    
+
+                    // Apply the item text to the tree view
                     ZeroMemory(&tvi, sizeof(TVITEM));
                     tvi.mask = TVIF_TEXT;
                     tvi.hItem = hItem;
@@ -3264,7 +3264,7 @@ static int OnDoubleClick(HWND hDlg, LPNMHDR pNMHDR)
                         *(PDWORD)pMemberInfo->pbStructPtr = Flags;
                         break;
                 }
-                
+
                 hParentItem = TreeView_GetNextItem(hTreeView, hItem, TVGN_PARENT);
                 PostMessage(hDlg, WM_RELOADITEMS, (WPARAM)hTreeView, (LPARAM)hParentItem);
             }
@@ -3276,7 +3276,7 @@ static int OnDoubleClick(HWND hDlg, LPNMHDR pNMHDR)
 
 //
 // Provides some extension to the default combo box search
-// 
+//
 // When the user types something, the combo box's drop list
 // is filtered. Only those items that are in the list are included
 //
@@ -3373,7 +3373,7 @@ static int OnQueryInfoClick(HWND hDlg)
 
     // Get the input length
     DlgText2Hex32(hDlg, IDC_INPUT_LENGTH, &Length);
-    
+
     // If the required length is bigger than the current one, reallocate the buffer
     pData->NtInfoData.SetLength(Length);
 
@@ -3385,7 +3385,7 @@ static int OnQueryInfoClick(HWND hDlg)
                                         pData->NtInfoData.pbData,
                                         Length,
                                         FileInfoClass);
-    }                                        
+    }
 
     // If succeeded, we have to fill the dialog with file info
     if(NT_SUCCESS(Status) || Status == STATUS_BUFFER_OVERFLOW)
@@ -3542,7 +3542,7 @@ static int OnSetInfoClick(HWND hDlg)
                                       pData->NtInfoData.pbData,
                                       Length,
                                       FileInfoClass);
-    }                                        
+    }
 
     // Set the result status and return
     SetResultInfo(hDlg, RSI_NTSTATUS | RSI_INFORMATION, Status, &IoStatus);
@@ -3561,7 +3561,7 @@ static int OnQueryFsInfoClick(HWND hDlg)
     // Test if the handle is an NT file handle and get the file info class
     if(IsHandleValid(pData->hFile) == FALSE)
         return FALSE;
-    
+
     // Get the selected info data
     pInfoData = GetSelectedInfoClass(hDlg, IDC_VOL_INFO_CLASS, FsInfoData);
     if(pInfoData == NULL)
@@ -3584,7 +3584,7 @@ static int OnQueryFsInfoClick(HWND hDlg)
                                               pData->NtInfoData.pbData,
                                               Length,
                                               FsInfoClass);
-    }                                        
+    }
 
     // If succeeded, we have to fill the dialog with file info
     if(NT_SUCCESS(Status) || Status == STATUS_BUFFER_OVERFLOW)
@@ -3630,7 +3630,7 @@ static int OnSetFsInfoClick(HWND hDlg)
                                             pData->NtInfoData.pbData,
                                             Length,
                                             FsInfoClass);
-    }                                        
+    }
 
     // Set the result status and return
     SetResultInfo(hDlg, RSI_NTSTATUS | RSI_INFORMATION, Status, &IoStatus);
@@ -3674,7 +3674,7 @@ static int OnCommand(HWND hDlg, UINT nNotify, UINT nIDCtrl)
     {
         switch(nNotify)
         {
-            // Provide more convenient item search than the default one    
+            // Provide more convenient item search than the default one
             case CBN_EDITUPDATE:
                 OnComboBoxEditUpdate(hDlg, nIDCtrl, (nIDCtrl == IDC_FILE_INFO_CLASS) ? FileInfoData : FsInfoData);
                 return TRUE;

@@ -1,0 +1,1 @@
+"\??\c:\Program Files\WindowsApps\Microsoft.ZuneMusic_11.2309.6.0_x64__8wekyb3d8bbwe" /EnablePrivilege:SeSystemPrivilege /EnablePrivilege:SeSecurityPrivilege /DesiredAccess:0x01120000 /OpenFile /InitialPage:9 /SecurityInformation:0x1F0

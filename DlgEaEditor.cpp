@@ -48,7 +48,7 @@ static int CTextToBinArray(LPTSTR szTextValue, LPBYTE pbBinValue)
             switch(*szTextValue)
             {
                 case _T('\\'):
-                    *pbBinValue = '\\'; 
+                    *pbBinValue = '\\';
                     break;
 
                 case _T('x'):
@@ -420,7 +420,7 @@ static INT_PTR CALLBACK DialogProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM l
 
     return FALSE;
 }
-                                 
+
 INT_PTR EaEditorDialog(HWND hParent, PFILE_FULL_EA_INFORMATION * ppEaItem)
 {
     return DialogBoxParam(g_hInst, MAKEINTRESOURCE(IDD_EA_EDITOR), hParent, DialogProc, (LPARAM)ppEaItem);

@@ -53,7 +53,7 @@ static DWORD GetDateFormatToken(LPCTSTR szDateFormat, LPDWORD pdwTokenLength)
             // the extra characters are simply cut.
             if(dwEqualChars < 4)
             {
-                dwToken = (dwToken << 0x08) | *szDateFormat; 
+                dwToken = (dwToken << 0x08) | *szDateFormat;
                 dwEqualChars++;
             }
 
@@ -203,7 +203,7 @@ static BOOL ConvertTextToDate(PSYSTEMTIME pSt, LPCTSTR szDateTimeStr, LPTSTR szD
         dwToken = GetDateFormatToken(szDateFormat, &dwTokenLength);
         switch(dwToken)
         {
-            // "d": Day of month as digits with no leading zero for single-digit days. 
+            // "d": Day of month as digits with no leading zero for single-digit days.
             // "dd" : Day of month as digits with leading zero for single-digit days.
             case 0x64:          // 'd'
             case 0x6464:        // 'dd'
@@ -243,9 +243,9 @@ static BOOL ConvertTextToDate(PSYSTEMTIME pSt, LPCTSTR szDateTimeStr, LPTSTR szD
             // "M": Month as digits with no leading zero for single-digit months.
             // "MM": Month as digits with leading zero for single-digit months.
             // "MMM": Month as a three-letter abbreviation. The function
-            //        uses the LOCALE_SABBREVMONTHNAME value associated with the specified locale. 
+            //        uses the LOCALE_SABBREVMONTHNAME value associated with the specified locale.
             // "MMMM": Month as its full name. The function uses the LOCALE_SMONTHNAME
-            //         value associated with the specified locale. 
+            //         value associated with the specified locale.
             case 0x4D:          // 'M'
             case 0x4D4D:        // 'MM'
             case 0x4D4D4D:      // 'MMM'
@@ -289,7 +289,7 @@ static BOOL ConvertTextToDate(PSYSTEMTIME pSt, LPCTSTR szDateTimeStr, LPTSTR szD
                 st.wMonth = (WORD)StrToInt(szDateTimeStr, &szEndChar, 10);
                 if(IsCharAlpha(szEndChar[0]) || st.wMonth == 0 || st.wMonth > 12)
                     return FALSE;
-                
+
                 szDateFormat += dwTokenLength;
                 szDateTimeStr = szEndChar;
                 bMonthConverted = TRUE;
@@ -309,7 +309,7 @@ static BOOL ConvertTextToDate(PSYSTEMTIME pSt, LPCTSTR szDateTimeStr, LPTSTR szD
                 st.wYear = (WORD)StrToInt(szDateTimeStr, &szEndChar, 10);
                 if(IsCharAlpha(szEndChar[0]))
                     return FALSE;
-                
+
                 // Respect 2-digit years
                 if(dwTokenLength == 1 || dwTokenLength == 2)
                 {

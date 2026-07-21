@@ -327,7 +327,7 @@ static int OnReadWriteFile(HWND hDlg, int nIDCtrl)
     // Create new APC entry
     pApc = CreateApcEntry(pData, APC_TYPE_READ_WRITE, OutputLength);
     if(pApc != NULL)
-    {   
+    {
         // Remember the state of "Increment position"
         pApc->ByteOffset = ByteOffset;
         pApc->bIncrementPosition = (IsDlgButtonChecked(hDlg, IDC_INCREASE_FILEPOS) == BST_CHECKED);
@@ -528,7 +528,7 @@ static int OnSetFilePointerClick(HWND hDlg)
 
     // Get the file offset from the dialog
     DlgText2Hex64(hDlg, IDC_BYTE_OFFSET, &ByteOffset.QuadPart);
-    
+
     // Apply the file size
     SetLastError(ERROR_SUCCESS);
     ByteOffset.LowPart = SetFilePointer(pData->hFile, ByteOffset.LowPart, &ByteOffset.HighPart, FILE_BEGIN);

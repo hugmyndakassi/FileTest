@@ -253,7 +253,7 @@ static int OnEditEa(HWND hDlg)
     pEaItem = (PFILE_FULL_EA_INFORMATION)ListView_GetItemParam(hListView, nSelected);
     if(EaEditorDialog(hDlg, &pEaItem) != IDOK)
         return TRUE;
-    
+
     SetListViewEaEntry(hListView, nSelected, pEaItem, FALSE);
     UpdateDialogButtons(hDlg);
     return TRUE;
@@ -271,7 +271,7 @@ static int OnDeleteEa(HWND hDlg)
     return TRUE;
 }
 
-               
+
 static int OnDoubleClick(HWND hDlg)
 {
     HWND hListView = GetDlgItem(hDlg, IDC_EA_LIST);

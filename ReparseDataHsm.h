@@ -56,7 +56,7 @@ typedef struct _HSM_REPARSE_DATA
     USHORT Flags;                       // Lower 8 bits is revision (must be 1 as of Windows 10 16299)
                                         // Flags: 0x8000 = Data needs to be decompressed by RtlCompressBuffer
     USHORT Length;                      // Length of the HSM_REPARSE_DATA structure (including "Flags" and "Length")
-    
+
     HSM_DATA FileData;                  // HSM data
 } HSM_REPARSE_DATA, *PHSM_REPARSE_DATA;
 

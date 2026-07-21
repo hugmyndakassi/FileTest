@@ -1,0 +1,11 @@
+00000000 HSM_REPARSE_BUFFER struc
+00000000 ReparseTag      dd ?
+00000004 ReparseDataLength dw ?
+00000006 Reserved        dw ?
+00000008 Flags           dd ?
+         - 0x00008000: The buffer is uncompressed
+		 - 0xXXXX0000: Size of the uncompressed buffer
+
+
+
+0000000C HSM_REPARSE_BUFFER ends

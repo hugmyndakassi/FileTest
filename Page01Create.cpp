@@ -170,7 +170,7 @@ static int OnInitDialog(HWND hDlg, LPARAM lParam)
     if(hCombo != NULL)
         ComboBox_SetCurSel(hCombo, pData->OpenFile.dwCreateDisposition1 - 1);
 
-    // If we have a tooltip window, init tooltips 
+    // If we have a tooltip window, init tooltips
     g_Tooltip.AddToolTip(hDlg, IDC_DESIRED_ACCESS,  AccessMaskValues);
     g_Tooltip.AddToolTip(hDlg, IDC_SHARE_ACCESS,    ShareAccessValues);
     g_Tooltip.AddToolTip(hDlg, IDC_FILE_ATTRIBUTES, FlagsAndAttributesValues);
@@ -178,7 +178,7 @@ static int OnInitDialog(HWND hDlg, LPARAM lParam)
     // On pre-Vista, disable the virtualization button
     if(GetTokenVirtualizationEnabled(NULL))
         EnableDlgItems(hDlg, TRUE, IDC_VIRTUALIZATION, 0);
-    
+
     // If we already have handle, init the dialog's controls
     if(IsHandleValid(pData->hFile))
         SetResultInfo(hDlg, RSI_HANDLE, pData->hFile);
@@ -194,7 +194,7 @@ static int OnSetActive(HWND hDlg)
     // Set directory name
     SetDlgItemText(hDlg, IDC_DIRECTORY_NAME, pData->szDirName);
     ConvertToWin32Name(hDlg, IDC_DIRECTORY_NAME);
-    
+
     // Set file name
     if((pData->OpenFile.dwCreateOptions & FILE_OPEN_BY_FILE_ID) == 0)
     {
@@ -246,7 +246,7 @@ static int OnBrowseFileClick(HWND hDlg)
     ofn.lpstrFile = MAKEINTRESOURCE(IDC_FILE_NAME);
     ofn.lpstrTitle = MAKEINTRESOURCE(IDS_SELECT_FILE);
     ofn.lpstrFilter = MAKEINTRESOURCE(IDS_FILTER_ALL);
-    GetOpenFileNameRc(hDlg, &ofn); 
+    GetOpenFileNameRc(hDlg, &ofn);
 
     return TRUE;
 }
@@ -259,7 +259,7 @@ static int OnBrowseTemplateClick(HWND hDlg)
     ofn.lpstrFile = MAKEINTRESOURCE(IDC_TEMPLATE_FILE);
     ofn.lpstrTitle = MAKEINTRESOURCE(IDS_SELECT_FILE);
     ofn.lpstrFilter = MAKEINTRESOURCE(IDS_FILTER_ALL);
-    GetOpenFileNameRc(hDlg, &ofn); 
+    GetOpenFileNameRc(hDlg, &ofn);
 
     return TRUE;
 }
@@ -316,7 +316,7 @@ static int OnMakeDirectoryClick(HWND hDlg)
                 // Find either next backslash or end of string
                 szTemp = FindNextPathSeparator(szPathPart);
                 szPathPart = szTemp + 1;
-                
+
                 // Attempt to create the directory. For parent directories, allow ERROR_ALREADY_EXISTS
                 dwErrCode = MyCreateDirectory(pData, szDirectory, (szTemp - szDirectory));
                 if(dwErrCode == ERROR_ALREADY_EXISTS && szTemp < szDirectoryEnd)
@@ -472,7 +472,7 @@ static int OnCommand(HWND hDlg, UINT nNotify, UINT nIDCtrl)
 
             case IDC_FILE_ATTRIBUTES_BROWSE:
                 return OnFileAttributesClick(hDlg);
-        
+
             case IDC_SHARE_ACCESS_BROWSE:
                 return OnShareAccessClick(hDlg);
 

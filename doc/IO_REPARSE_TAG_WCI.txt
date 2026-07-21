@@ -1,0 +1,51 @@
+IO_REPARSE_TAG_WCI = 0x80000018
+
+Cannot be handled by Windows 7
+
+bp nt!NtCreateFile "dx @$curprocess; dt _OBJECT_ATTRIBUTES poi(@esp+0x0C)"
+--------------------------------------------------------------------------
+1) nt!_OBJECT_ATTRIBUTES
+   +0x000 Length           : 0x18
+   +0x004 RootDirectory    : (null) 
+   +0x008 ObjectName       : 0x0012f85c _UNICODE_STRING "\??\c:\Users\VMUSER\AppData\Local\Packages\SpotifyAB.SpotifyMusic_zpdnekdrzrea0"
+   +0x00c Attributes       : 0x40
+   +0x010 SecurityDescriptor : (null) 
+   +0x014 SecurityQualityOfService : (null) 
+
+bp wcifs!WcPreCreate "dx @$curprocess.Name; dt _FLT_RELATED_OBJECTS FileObject poi(@esp+8)"
+-------------------------------------------------------------------------------------------
+1) "\Users\VMUSER\AppData\Local\Packages\"
+2) "\Users\VMUSER\AppData\Local\Packages\SpotifyAB.SpotifyMusic_zpdnekdrzrea0"
+
+- The wcifs!WcPreCreate fills the OPEN_REPARSE_LIST_ENTRY structure
+  and adds it to the IRP
+   
+bp wcifs!WcPostCreate "dx @$curprocess.Name; dt _FLT_RELATED_OBJECTS FileObject poi(@esp+8)"
+-------------------------------------------------------------------------------------------
+
+
+   
+bp ntfs!NtfsFsdCreate "dx @$curprocess; !irp poi(@esp+0x08) 3"
+--------------------------------------------------------------   
+1) \Users\VMUSER\AppData\Local\Packages\
+2) \Users\VMUSER\AppData\Local\Packages\
+3) \Users\VMUSER\AppData\Local\Packages\
+4) \Users\VMUSER\AppData\Local\Packages\SpotifyAB.SpotifyMusic_zpdnekdrzrea0
+
+wcifs.sys
+---------
+Windows Container Isolation FS Filter Driver
+
+bp wcifs!WcGenerateFileName "dx @$curprocess.Name"
+
+
+
+ntfs!NtfsFsdCreate:
+Irp:        b7aad690
+FileObject: 97668b70 "\Users\VMUSER\AppData\Local\Packages\SpotifyAB.SpotifyMusic_zpdnekdrzrea0"
+
+Ntfs!NtfsExtendedCompleteRequestInternal returns c0000016 (STATUS_MORE_PROCESSING_REQUIRED)
+
+NtfsGetReparsePointValue
+
+NTSTATUS __stdcall WcGenerateFileName(FLT_INSTANCE Instance, FILE_OBJECT * FileObject, FLT_CALLBACK_DATA * CallbackData, uint32 NameOptions, BOOLEAN * CacheFileNameInformation, FLT_NAME_CONTROL * FileName);

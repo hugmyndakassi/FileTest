@@ -24,12 +24,12 @@ class TToolTip
     // Initializes the tooltip. Call once per application
     BOOL Initialize(HINSTANCE hInst, HWND hWndParent);
     void Destroy();
-    
+
     // Adds a flag-based tooltip for the specified child window
     BOOL AddToolTip(HWND hDlg, UINT nIDCtrl, TFlagInfo * pFlags);
     BOOL AddToolTip(HWND hDlg, UINT nIDCtrl, UINT nIDTip);
-    
-    // Handles all messages    
+
+    // Handles all messages
     LRESULT HandleMessages(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL * pbHandled);
 
     protected:
@@ -38,7 +38,7 @@ class TToolTip
     void OnGetTooltipText(LPNMTTDISPINFO pTTDispInfo);
 
     LPTSTR szToolTipText;       // Text for preparing the buffer
-    size_t cchTooltipText;      // Length of the buffer 
+    size_t cchTooltipText;      // Length of the buffer
     HWND hWndToolTip;           // Handle to the tooltip window
 };
 

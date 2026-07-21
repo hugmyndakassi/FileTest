@@ -33,7 +33,7 @@ struct TDialogData
 
     DWORD dwIntegrityLevel;
     DWORD dwSaveIntLevel;
-    
+
     BOOL bLongPathsSupported;
     BOOL bLongPathsEnabled;
 
@@ -131,7 +131,7 @@ static void LoadSystemSettings(TDialogData & Data)
     {
         // The feature is supported
         Data.bLongPathsSupported = TRUE;
-        
+
         // Let's get whether it's enabled
         if(RegOpenKeyEx(HKEY_LOCAL_MACHINE, szKeyName, 0, KEY_QUERY_VALUE, &hSubKey) == ERROR_SUCCESS)
         {
@@ -584,7 +584,7 @@ INT_PTR PrivilegesDialog(HWND hParent)
     int nPages = 0;
 
     // Load the current system settings
-    LoadSystemSettings(Data);    
+    LoadSystemSettings(Data);
 
     // Create the "Privileges" page
     psp.dwSize      = sizeof(PROPSHEETPAGE);

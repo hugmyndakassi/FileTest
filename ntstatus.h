@@ -1184,7 +1184,7 @@ Notes:
 //
 // The system was put into hibernation.
 //
-#define STATUS_HIBERNATED                ((NTSTATUS)0x4000002AL)    
+#define STATUS_HIBERNATED                ((NTSTATUS)0x4000002AL)
 
 //
 // MessageId: STATUS_RESUME_HIBERNATION
@@ -1193,7 +1193,7 @@ Notes:
 //
 // The system was resumed from hibernation.
 //
-#define STATUS_RESUME_HIBERNATION        ((NTSTATUS)0x4000002BL)    
+#define STATUS_RESUME_HIBERNATION        ((NTSTATUS)0x4000002BL)
 
 //
 // MessageId: STATUS_FIRMWARE_UPDATED
@@ -1229,7 +1229,7 @@ Notes:
 //
 // The system power state is transitioning from %2 to %3.
 //
-#define STATUS_SYSTEM_POWERSTATE_TRANSITION ((NTSTATUS)0x4000002FL)    
+#define STATUS_SYSTEM_POWERSTATE_TRANSITION ((NTSTATUS)0x4000002FL)
 
 //
 // MessageId: STATUS_ALPC_CHECK_COMPLETION_LIST
@@ -1247,7 +1247,7 @@ Notes:
 //
 // The system power state is transitioning from %2 to %3 but could enter %4.
 //
-#define STATUS_SYSTEM_POWERSTATE_COMPLEX_TRANSITION ((NTSTATUS)0x40000031L)    
+#define STATUS_SYSTEM_POWERSTATE_COMPLEX_TRANSITION ((NTSTATUS)0x40000031L)
 
 //
 // MessageId: STATUS_ACCESS_AUDIT_BY_POLICY
@@ -1256,7 +1256,7 @@ Notes:
 //
 // Access to %1 is monitored by policy rule %2.
 //
-#define STATUS_ACCESS_AUDIT_BY_POLICY    ((NTSTATUS)0x40000032L)    
+#define STATUS_ACCESS_AUDIT_BY_POLICY    ((NTSTATUS)0x40000032L)
 
 //
 // MessageId: STATUS_ABANDON_HIBERFILE
@@ -1988,13 +1988,13 @@ Notes:
 // MessageText:
 //
 // Link configuration for the display timing is still in progress.
-// 
+//
 // ;/*++
 // ;
 // ; End of Graphics Facility Warning messages.
 // ;
 // ;--*/
-// 
+//
 //
 #define STATUS_GRAPHICS_LINK_CONFIGURATION_IN_PROGRESS ((NTSTATUS)0x801E0000L)
 
@@ -7723,7 +7723,7 @@ Notes:
 // Alignment Error
 // A datatype misalignment error was detected in a load or store instruction.
 //
-#define STATUS_DATATYPE_MISALIGNMENT_ERROR ((NTSTATUS)0xC00002C5L)    
+#define STATUS_DATATYPE_MISALIGNMENT_ERROR ((NTSTATUS)0xC00002C5L)
 
 //
 // MessageId: STATUS_WMI_READ_ONLY
@@ -8727,7 +8727,7 @@ Notes:
 //
 // Access to %1 has been restricted by your Administrator by policy rule %2.
 //
-#define STATUS_ACCESS_DISABLED_NO_SAFER_UI_BY_POLICY ((NTSTATUS)0xC0000372L)    
+#define STATUS_ACCESS_DISABLED_NO_SAFER_UI_BY_POLICY ((NTSTATUS)0xC0000372L)
 
 //
 // MessageId: STATUS_FAILED_STACK_SWITCH
@@ -9431,7 +9431,7 @@ Notes:
 //
 // Insufficient NVRAM resources exist to complete the API.  A reboot might be required.
 //
-#define STATUS_INSUFFICIENT_NVRAM_RESOURCES ((NTSTATUS)0xC0000454L)    
+#define STATUS_INSUFFICIENT_NVRAM_RESOURCES ((NTSTATUS)0xC0000454L)
 
 //
 // MessageId: STATUS_INVALID_SESSION
@@ -18100,7 +18100,7 @@ Notes:
 //
 // Specified display adapter child device already has an external device connected to it.
 //
-#define STATUS_GRAPHICS_SPECIFIED_CHILD_ALREADY_CONNECTED ((NTSTATUS)0xC01E0400L)    
+#define STATUS_GRAPHICS_SPECIFIED_CHILD_ALREADY_CONNECTED ((NTSTATUS)0xC01E0400L)
 
 //
 // MessageId: STATUS_GRAPHICS_CHILD_DESCRIPTOR_NOT_SUPPORTED
@@ -18109,7 +18109,7 @@ Notes:
 //
 // Specified display adapter child device does not support descriptor exposure.
 //
-#define STATUS_GRAPHICS_CHILD_DESCRIPTOR_NOT_SUPPORTED ((NTSTATUS)0xC01E0401L)    
+#define STATUS_GRAPHICS_CHILD_DESCRIPTOR_NOT_SUPPORTED ((NTSTATUS)0xC01E0401L)
 
 //
 // MessageId: STATUS_GRAPHICS_UNKNOWN_CHILD_STATUS
@@ -18247,7 +18247,7 @@ Notes:
 //
 // The driver does not support OPM.
 //
-#define STATUS_GRAPHICS_OPM_NOT_SUPPORTED ((NTSTATUS)0xC01E0500L)    
+#define STATUS_GRAPHICS_OPM_NOT_SUPPORTED ((NTSTATUS)0xC01E0500L)
 
 //
 // MessageId: STATUS_GRAPHICS_COPP_NOT_SUPPORTED
@@ -18256,7 +18256,7 @@ Notes:
 //
 // The driver does not support COPP.
 //
-#define STATUS_GRAPHICS_COPP_NOT_SUPPORTED ((NTSTATUS)0xC01E0501L)    
+#define STATUS_GRAPHICS_COPP_NOT_SUPPORTED ((NTSTATUS)0xC01E0501L)
 
 //
 // MessageId: STATUS_GRAPHICS_UAB_NOT_SUPPORTED
@@ -18265,7 +18265,7 @@ Notes:
 //
 // The driver does not support UAB.
 //
-#define STATUS_GRAPHICS_UAB_NOT_SUPPORTED ((NTSTATUS)0xC01E0502L)    
+#define STATUS_GRAPHICS_UAB_NOT_SUPPORTED ((NTSTATUS)0xC01E0502L)
 
 //
 // MessageId: STATUS_GRAPHICS_OPM_INVALID_ENCRYPTED_PARAMETERS
@@ -18274,7 +18274,7 @@ Notes:
 //
 // The specified encrypted parameters are invalid.
 //
-#define STATUS_GRAPHICS_OPM_INVALID_ENCRYPTED_PARAMETERS ((NTSTATUS)0xC01E0503L)    
+#define STATUS_GRAPHICS_OPM_INVALID_ENCRYPTED_PARAMETERS ((NTSTATUS)0xC01E0503L)
 
 //
 // MessageId: STATUS_GRAPHICS_OPM_NO_PROTECTED_OUTPUTS_EXIST
@@ -18475,7 +18475,7 @@ Notes:
 //
 // The monitor connected to the specified video output does not have an I2C bus.
 //
-#define STATUS_GRAPHICS_I2C_NOT_SUPPORTED ((NTSTATUS)0xC01E0580L)    
+#define STATUS_GRAPHICS_I2C_NOT_SUPPORTED ((NTSTATUS)0xC01E0580L)
 
 //
 // MessageId: STATUS_GRAPHICS_I2C_DEVICE_DOES_NOT_EXIST
@@ -18484,7 +18484,7 @@ Notes:
 //
 // No device on the I2C bus has the specified address.
 //
-#define STATUS_GRAPHICS_I2C_DEVICE_DOES_NOT_EXIST ((NTSTATUS)0xC01E0581L)    
+#define STATUS_GRAPHICS_I2C_DEVICE_DOES_NOT_EXIST ((NTSTATUS)0xC01E0581L)
 
 //
 // MessageId: STATUS_GRAPHICS_I2C_ERROR_TRANSMITTING_DATA
@@ -18493,7 +18493,7 @@ Notes:
 //
 // An error occurred while transmitting data to the device on the I2C bus.
 //
-#define STATUS_GRAPHICS_I2C_ERROR_TRANSMITTING_DATA ((NTSTATUS)0xC01E0582L)    
+#define STATUS_GRAPHICS_I2C_ERROR_TRANSMITTING_DATA ((NTSTATUS)0xC01E0582L)
 
 //
 // MessageId: STATUS_GRAPHICS_I2C_ERROR_RECEIVING_DATA
@@ -18502,7 +18502,7 @@ Notes:
 //
 // An error occurred while receiving data from the device on the I2C bus.
 //
-#define STATUS_GRAPHICS_I2C_ERROR_RECEIVING_DATA ((NTSTATUS)0xC01E0583L)    
+#define STATUS_GRAPHICS_I2C_ERROR_RECEIVING_DATA ((NTSTATUS)0xC01E0583L)
 
 //
 // MessageId: STATUS_GRAPHICS_DDCCI_VCP_NOT_SUPPORTED
@@ -18511,7 +18511,7 @@ Notes:
 //
 // The monitor does not support the specified VCP code.
 //
-#define STATUS_GRAPHICS_DDCCI_VCP_NOT_SUPPORTED ((NTSTATUS)0xC01E0584L)    
+#define STATUS_GRAPHICS_DDCCI_VCP_NOT_SUPPORTED ((NTSTATUS)0xC01E0584L)
 
 //
 // MessageId: STATUS_GRAPHICS_DDCCI_INVALID_DATA
@@ -18520,7 +18520,7 @@ Notes:
 //
 // The data received from the monitor is invalid.
 //
-#define STATUS_GRAPHICS_DDCCI_INVALID_DATA ((NTSTATUS)0xC01E0585L)    
+#define STATUS_GRAPHICS_DDCCI_INVALID_DATA ((NTSTATUS)0xC01E0585L)
 
 //
 // MessageId: STATUS_GRAPHICS_DDCCI_MONITOR_RETURNED_INVALID_TIMING_STATUS_BYTE
@@ -23172,8 +23172,8 @@ Notes:
 // MessageText:
 //
 // The request to lock or map a memory block page failed because the virtualization infrastructure driver memory block limit has been reached. Restarting the virtual machine may fix the problem. If the problem persists, try restarting the physical computer.
-// 
-// 
+//
+//
 //
 #define STATUS_VID_MEMORY_BLOCK_LOCK_COUNT_EXCEEDED ((NTSTATUS)0xC0370017L)
 
@@ -26213,7 +26213,7 @@ Notes:
 //
 // MessageText:
 //
-// The user canceled the authentication prompt to a remote server. 
+// The user canceled the authentication prompt to a remote server.
 //
 #define STATUS_NETWORK_AUTHENTICATION_PROMPT_CANCELED ((NTSTATUS)0xC05D0004L)
 

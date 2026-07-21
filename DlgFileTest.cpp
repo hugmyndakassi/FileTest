@@ -146,13 +146,13 @@ static DWORD WINAPI ApcThread(LPVOID pvParameter)
             // Remove the APC from the list and free it
             FreeApcEntry(pApc);
         }
-        
+
         // Reset the APC list
         InitializeListHead(&pData->ApcList);
         pData->nApcCount = 0;
     }
     LeaveCriticalSection(&pData->ApcLock);
-    
+
     return 0;
 }
 
@@ -883,7 +883,7 @@ INT_PTR FileTestDialog(HWND hParent, TFileTestData * pData)
                              hParent,
                              DialogProc,
                              (LPARAM)pData);
-    
+
     // Perform the modal loop
     if(hDlg != NULL)
     {

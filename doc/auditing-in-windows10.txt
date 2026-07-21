@@ -1,0 +1,19 @@
+How to audit a file in Windows 10
+---------------------------------
+
+1. Enable Auditing in Global Policy Editor
+
+ * Open gpedit.msc
+ * Locate the branch "Computer Configuration\Windows Settings\Security Settings\Local Policies\Audit Policy"
+ * Select "Audit object access"
+ * Choose "Success and/or failure"
+ * Relog or run "gpupdate.exe"
+
+2. Add an SYSTEM_AUDIT_ACE to a file. Make sure that the SUCCESSFUL_ACCESS_ACE_FLAG is present.
+3. Try to open the file
+
+4. Examine the event in Event Viewer
+
+* Run eventvwr.exe
+* Navigate to "Windows Logs \ Security"
+* Locate the "File System" in the "Task Category" column

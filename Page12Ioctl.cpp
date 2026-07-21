@@ -502,7 +502,7 @@ static void OnIoctlClick(HWND hDlg, UINT nIDCtrl)
                     InsertApcEntry(pData, pApc);
                     return;
                 }
-                
+
                 pApc->IoStatus.Status = Status;
                 break;
         }
@@ -537,7 +537,7 @@ static int OnCommand(HWND hDlg, UINT nNotify, UINT nIDCtrl)
                 OnIoctlClick(hDlg, nIDCtrl);
             return FALSE;
     }
-    
+
     return TRUE;
 }
 

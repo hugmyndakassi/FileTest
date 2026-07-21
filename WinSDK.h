@@ -77,7 +77,7 @@
 #endif
 
 #ifndef FILE_ATTRIBUTE_STRICTLY_SEQUENTIAL
-#define FILE_ATTRIBUTE_STRICTLY_SEQUENTIAL  0x20000000  
+#define FILE_ATTRIBUTE_STRICTLY_SEQUENTIAL  0x20000000
 #endif
 
 #ifndef MEM_ROTATE
@@ -89,7 +89,7 @@
 #endif
 
 #ifndef SEC_HUGE_PAGES
-#define SEC_HUGE_PAGES              0x00020000  
+#define SEC_HUGE_PAGES              0x00020000
 #endif
 
 #ifndef SEC_PARTITION_OWNER_HANDLE
@@ -222,7 +222,7 @@
 #ifndef ATTRIBUTE_SECURITY_INFORMATION
 #define ATTRIBUTE_SECURITY_INFORMATION          (0x00000020L)
 #define SCOPE_SECURITY_INFORMATION              (0x00000040L)
-#define PROCESS_TRUST_LABEL_SECURITY_INFORMATION (0x00000080L) 
+#define PROCESS_TRUST_LABEL_SECURITY_INFORMATION (0x00000080L)
 #define ACCESS_FILTER_SECURITY_INFORMATION      (0x00000100L)
 #define BACKUP_SECURITY_INFORMATION             (0x00010000L)
 #define PROTECTED_DACL_SECURITY_INFORMATION     (0x80000000L)
@@ -410,7 +410,7 @@ typedef struct _SYSTEM_MANDATORY_LABEL_ACE
 // * Can be accessed with SecurityInformation = ATTRIBUTE_SECURITY_INFORMATION
 // * Presence checked by nt!SepSDContainsAttributeACE
 // * In case NtSetSecurityObject returns STATUS_INVALID_ACL, look here:
-//   nt!NtSetSecurityObject -> nt!SeCaptureSecurityDescriptor -> nt!RtlValidAcl -> nt!RtlpValidAttributeAce -> 
+//   nt!NtSetSecurityObject -> nt!SeCaptureSecurityDescriptor -> nt!RtlValidAcl -> nt!RtlpValidAttributeAce ->
 //   nt!RtlpValidRelativeAttribute(PCLAIM_SECURITY_ATTRIBUTE_RELATIVE_V1 pAttrRel, size_t cbAttrRel)
 // * Can be found on %USERPROFILE%\Downloads
 //
@@ -458,7 +458,7 @@ typedef struct _SYSTEM_SCOPED_POLICY_ID_ACE
 //   required process protection level. Caller's with lower level will be limited
 //   to the subsets of rights specified in the ACE.
 // * SYSTEM_PROCESS_TRUST_LABEL_ACE::Mask must have upper 8 bits zeroed (tested by RtlpSetSecurityObject)
-// * Can be set only if the current token has a trust level SID. If not, nt!RtlpSetSecurityObject returns STATUS_ACCESS_DENIED 
+// * Can be set only if the current token has a trust level SID. If not, nt!RtlpSetSecurityObject returns STATUS_ACCESS_DENIED
 // * Can be found on C:\Program Files\WindowsApps\<any subfolder>
 //
 
@@ -479,11 +479,11 @@ typedef struct _SYSTEM_PROCESS_TRUST_LABEL_ACE
 //
 // * Can be accessed with SecurityInformation = ACCESS_FILTER_SECURITY_INFORMATION
 // * Upper 8 bits of SYSTEM_ACCESS_FILTER_ACE::Mask must be zero
-// * If TRUST_PROTECTED_FILTER_ACE_FLAG in ACE_HEADER::AceFlags is NOT set, the SID must be Everyone, which means the system simply filters access according to the callback condition. 
+// * If TRUST_PROTECTED_FILTER_ACE_FLAG in ACE_HEADER::AceFlags is NOT set, the SID must be Everyone, which means the system simply filters access according to the callback condition.
 // * If TRUST_PROTECTED_FILTER_ACE_FLAG in ACE_HEADER::AceFlags is set, the SID must represent a trust level (S-1-19-x-y).
-//   In this case, the system performs access filtration according to the condition only when the caller's trust is lower. 
+//   In this case, the system performs access filtration according to the condition only when the caller's trust is lower.
 //   In other words, a trust-protected Access Filter ACE works as a Trust Label Callback ACE would
-// * Can be set only if the current token has a trust level SID. If not, nt!RtlpSetSecurityObject returns STATUS_ACCESS_DENIED 
+// * Can be set only if the current token has a trust level SID. If not, nt!RtlpSetSecurityObject returns STATUS_ACCESS_DENIED
 // * Verified by nt!RtlpValidFilterAclSubjectContext(PACL pAcl, ULONG AceIndex)
 // * SID verified by nt!RtlpValidTrustSubjectContext
 
