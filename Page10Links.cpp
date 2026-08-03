@@ -23,6 +23,7 @@
 #define ITEM_TYPE_PRINTNAME_MP      0x0003
 #define ITEM_TYPE_SUBSTNAME_LNK     0x0004
 #define ITEM_TYPE_PRINTNAME_LNK     0x0005
+#define ITEM_TYPE_APPEXEC_LNK       0x0006
 
 static TFlagInfo ReparseTags[] =
 {
@@ -79,13 +80,6 @@ static TFlagInfo ReparseTags[] =
     FLAGINFO_END()
 };
 
-static LPCWSTR AppExecLinkParts[] =
-{
-    L"AppPackageID",
-    L"AppUserModelID",
-    L"TargetPath",
-};
-
 //-----------------------------------------------------------------------------
 // Support for REPARSE_DATA_BUFFER
 //
@@ -93,6 +87,12 @@ static LPCWSTR AppExecLinkParts[] =
 // - ReparseDataLength + REPARSE_DATA_BUFFER_HEADER_SIZE must be equal to total data length
 // - There must be both NT name and DOS name. Both names will be zero-terminated
 //
+
+template <typename LPXSTR>
+static LPXSTR NextString(LPXSTR szString)
+{
+    return szString + wcslen(szString) + 1;
+}
 
 static ULONG GetTotalDataLength(PREPARSE_DATA_BUFFER ReparseData)
 {
@@ -103,7 +103,7 @@ static ULONG GetTotalDataLength(PREPARSE_DATA_BUFFER ReparseData)
     return TotalLength;
 }
 
-static int UpdateReparseDataLength(PREPARSE_DATA_BUFFER ReparseData, LPTSTR szBaseBuffer)
+static DWORD UpdateReparseDataLength(PREPARSE_DATA_BUFFER ReparseData, LPTSTR szBaseBuffer)
 {
     size_t BufferOffset = (LPBYTE)szBaseBuffer - (LPBYTE)&ReparseData->MountPointReparseBuffer;
 
@@ -114,7 +114,7 @@ static int UpdateReparseDataLength(PREPARSE_DATA_BUFFER ReparseData, LPTSTR szBa
     return ERROR_SUCCESS;
 }
 
-static int SetReparseDataTag(PREPARSE_DATA_BUFFER ReparseData, ULONG ReparseTag, ULONG DataLength)
+static DWORD SetReparseDataTag(PREPARSE_DATA_BUFFER ReparseData, ULONG ReparseTag, ULONG DataLength)
 {
     // Always clear everything before changing tag
     memset(ReparseData, 0, DataLength);
@@ -141,7 +141,7 @@ static int SetReparseDataTag(PREPARSE_DATA_BUFFER ReparseData, ULONG ReparseTag,
     return ERROR_SUCCESS;
 }
 
-static int SetReparseDataSubstName(PREPARSE_DATA_BUFFER ReparseData, LPTSTR szBaseBuffer, LPCTSTR szSubstName)
+static DWORD SetReparseDataSubstName(PREPARSE_DATA_BUFFER ReparseData, LPTSTR szBaseBuffer, LPCTSTR szSubstName)
 {
     LPTSTR szOldPrintName;
     LPTSTR szNewPrintName;
@@ -162,7 +162,7 @@ static int SetReparseDataSubstName(PREPARSE_DATA_BUFFER ReparseData, LPTSTR szBa
     return UpdateReparseDataLength(ReparseData, szBaseBuffer);
 }
 
-static int SetReparseDataPrintName(PREPARSE_DATA_BUFFER ReparseData, LPTSTR szBaseBuffer, LPCTSTR szPrintName)
+static DWORD SetReparseDataPrintName(PREPARSE_DATA_BUFFER ReparseData, LPTSTR szBaseBuffer, LPCTSTR szPrintName)
 {
     size_t cbPrintName = _tcslen(szPrintName) * sizeof(WCHAR);
 
@@ -172,6 +172,58 @@ static int SetReparseDataPrintName(PREPARSE_DATA_BUFFER ReparseData, LPTSTR szBa
 
     // Fix the reparse data size
     return UpdateReparseDataLength(ReparseData, szBaseBuffer);
+}
+
+static DWORD SetReparseDataSubString(PREPARSE_DATA_BUFFER ReparseData, NMTVDISPINFO * pNMDispInfo)
+{
+    LPCTSTR szString = ReparseData->AppExecLinkReparseBuffer.StringList;
+    LPCTSTR szNewString = pNMDispInfo->item.pszText;
+    HWND hWndTree = pNMDispInfo->hdr.hwndFrom;
+    HTREEITEM hItem = pNMDispInfo->item.hItem;
+    LPTSTR szNewStrings;
+    size_t cbTotal = 0;
+    UINT nStringIndex = 0;
+    UINT nStringCount = 4;
+
+    // Get the index of the tree item that has just been edited. The four
+    // sub-items (package ID, model ID, target path, type) are siblings
+    // under the "AppExecLinkReparseBuffer" node, in that order
+    while((hItem = TreeView_GetPrevSibling(hWndTree, hItem)) != NULL)
+        nStringIndex++;
+    if(nStringIndex == 0 || nStringIndex >= nStringCount)
+        return ERROR_INVALID_PARAMETER;
+    nStringIndex--;
+
+    // Parse the existing strings, replace the one that has just been edited, and calculate the total length
+    if((szNewStrings = (LPTSTR)HeapAlloc(g_hHeap, HEAP_ZERO_MEMORY, MAXIMUM_REPARSE_DATA_BUFFER_SIZE)) != NULL)
+    {
+        LPCTSTR szSourceString;
+        LPTSTR szStringEnd = szNewStrings + (MAXIMUM_REPARSE_DATA_BUFFER_SIZE / sizeof(WCHAR));
+        LPTSTR szStringPtr = szNewStrings;
+
+        // Copy all strings to the target buffer
+        for(UINT i = 0; i < nStringCount; i++)
+        {
+            szSourceString = (i == nStringIndex) ? szNewString : szString;
+            StringCchCopy(szStringPtr, (size_t)(szStringEnd - szStringPtr), szSourceString);
+
+            szStringPtr = NextString(szStringPtr);
+            szString = NextString(szString);
+        }
+
+        // Replace the target buffer with the new strings
+        memcpy(ReparseData->AppExecLinkReparseBuffer.StringList, szNewStrings, (szStringPtr - szNewStrings + 1) * sizeof(WCHAR));
+        cbTotal = (szStringPtr - szNewStrings) * sizeof(WCHAR);
+
+        // Update the reparse data length
+        ReparseData->ReparseDataLength = (USHORT)(sizeof(ReparseData->AppExecLinkReparseBuffer.Version) + cbTotal);
+        HeapFree(g_hHeap, 0, szNewStrings);
+        return ERROR_SUCCESS;
+    }
+    else
+    {
+        return ERROR_NOT_ENOUGH_MEMORY;
+    }
 }
 
 static void InitializeReparseData(TFileTestData * pData)
@@ -233,33 +285,10 @@ static bool ReparseTargetIsDirectory(PREPARSE_DATA_BUFFER ReparseData)
     return bResult;
 }
 
-
 //-----------------------------------------------------------------------------
 // Helper functions
 
-static void BinaryToString(LPBYTE pbData, ULONG cbData, LPTSTR szBuffer, size_t cchBuffer)
-{
-    LPTSTR szSaveBuffer = szBuffer;
-    LPTSTR szBufferEnd = szBuffer + cchBuffer;
-    LPBYTE pbDataEnd = pbData + cbData;
-
-    while((szBuffer + 3) <= szBufferEnd && pbData < pbDataEnd)
-    {
-        // Put space there, if any
-        if(szBuffer > szSaveBuffer)
-            *szBuffer++ = _T(' ');
-
-        // Printf the hexa digit
-        *szBuffer++ = HexaAlphabetLower[pbData[0] >> 0x04];
-        *szBuffer++ = HexaAlphabetLower[pbData[0] & 0x0F];
-        pbData++;
-    }
-
-    // Terminate the buffer with zero
-    szBuffer[0] = 0;
-}
-
-static LPTSTR FormatReparseTag(ULONG ReparseTag, LPTSTR szBuffer, size_t cchBuffer)
+static LPTSTR StringCchReparseTag(LPTSTR szBuffer, size_t ccBuffer, ULONG ReparseTag)
 {
     LPCSTR szReparseTag = "unknown";
 
@@ -274,8 +303,115 @@ static LPTSTR FormatReparseTag(ULONG ReparseTag, LPTSTR szBuffer, size_t cchBuff
     }
 
     // Format the string
-    StringCchPrintf(szBuffer, cchBuffer, _T("%08X (%s)"), ReparseTag, TWideString(szReparseTag).GetStr());
+    StringCchPrintf(szBuffer, ccBuffer, _T("%08X (%s)"), ReparseTag, TWideString(szReparseTag).GetStr());
     return szBuffer;
+}
+
+static bool TreeView_SaveFocused(TFileTestData * pData, HWND hWndTree, HTREEITEM hItem, UINT uNestLevel)
+{
+    HTREEITEM hChild;
+    UINT uIndex = 0;
+    UINT uState;
+
+    // Sanity check
+    assert(uNestLevel < _countof(pData->SaveTreeItem));
+
+    // Enumerate tree view items
+    while(hItem != NULL)
+    {
+        // Check whether the tree view item is selected
+        uState = TreeView_GetItemState(hWndTree, hItem, TVIS_SELECTED);
+        if(uState & TVIS_SELECTED)
+        {
+            pData->SaveTreeItem[uNestLevel] = uIndex;
+            return true;
+        }
+
+        // Check if the tree view item has child
+        if((hChild = TreeView_GetChild(hWndTree, hItem)) != NULL)
+        {
+            if(TreeView_SaveFocused(pData, hWndTree, hChild, uNestLevel + 1))
+            {
+                pData->SaveTreeItem[uNestLevel] = uIndex;
+                return true;
+            }
+        }
+
+        // Get the next item
+        hItem = TreeView_GetNextSibling(hWndTree, hItem);
+        uIndex++;
+    }
+    return false;
+}
+
+static void TreeView_SaveFocused(TFileTestData * pData, HWND hDlg, UINT nID)
+{
+    HTREEITEM hRoot;
+    HWND hWndTree;
+
+    // Only if the save info is invalid
+    if(pData->SaveTreeItem[0] == 0xFFFFFFFF)
+    {
+        if((hWndTree = GetDlgItem(hDlg, nID)) != NULL)
+        {
+            hRoot = TreeView_GetRoot(hWndTree);
+            TreeView_SaveFocused(pData, hWndTree, hRoot, 0);
+        }
+    }
+}
+
+static bool TreeView_LoadFocused(TFileTestData * pData, HWND hWndTree, HTREEITEM hItem, UINT uNestLevel)
+{
+    HTREEITEM hChild;
+    UINT uIndex = 0;
+
+    // Sanity check
+    assert(uNestLevel < _countof(pData->SaveTreeItem));
+
+    // Enumerate tree view items
+    while(hItem != NULL)
+    {
+        // Is it the proper n-th subitem?
+        if(pData->SaveTreeItem[uNestLevel] == uIndex)
+        {
+            // Check if the tree view item has child(ren)
+            if((hChild = TreeView_GetChild(hWndTree, hItem)) != NULL)
+            {
+                TreeView_LoadFocused(pData, hWndTree, hChild, uNestLevel + 1);
+                return true;
+            }
+            else
+            {
+                TreeView_SelectItem(hWndTree, hItem);
+                return true;
+            }
+        }
+
+        // Get the next item
+        hItem = TreeView_GetNextSibling(hWndTree, hItem);
+        uIndex++;
+    }
+    return false;
+}
+
+static void TreeView_LoadFocused(TFileTestData * pData, HWND hDlg, UINT nID)
+{
+    HTREEITEM hRoot;
+    HWND hWndTree;
+
+    // Only if the save info is valid
+    if(pData->SaveTreeItem[0] != 0xFFFFFFFF)
+    {
+        // Select the appropriate tree view item
+        if((hWndTree = GetDlgItem(hDlg, nID)) != NULL)
+        {
+            hRoot = TreeView_GetRoot(hWndTree);
+            TreeView_LoadFocused(pData, hWndTree, hRoot, 0);
+        }
+
+        // Invalidate the selection info
+        memset(pData->SaveTreeItem, 0xFF, sizeof(pData->SaveTreeItem));
+    }
 }
 
 static HTREEITEM TreeView_InsertString(
@@ -436,6 +572,24 @@ static bool TreeView_EditString(HWND hWndEdit, LPTSTR szBaseBuffer, USHORT NameO
         memcpy(szString, (LPBYTE)szBaseBuffer + NameOffset, NameLength);
         SetWindowText(hWndEdit, szString);
         HeapFree(g_hHeap, 0, szString);
+        return true;
+    }
+
+    return false;
+}
+
+static bool TreeView_EditNamedValue(HWND hWndEdit, LPNMTVDISPINFO pNMDispInfo)
+{
+    LPTSTR szSubString;
+    LPTSTR szString;
+
+    // We need to allocate the string
+    if((szString = pNMDispInfo->item.pszText) != NULL)
+    {
+        // Remove the name prefix
+        if((szSubString = _tcsstr(szString, _T(": "))) != NULL)
+            szString = szSubString + 2;
+        SetWindowText(hWndEdit, szString);
         return true;
     }
 
@@ -664,6 +818,9 @@ static int OnInitDialog(HWND hDlg, LPARAM lParam)
     // Initialize the reparse data
     InitializeReparseData(pData);
 
+    // Invalidate the saved tree view data
+    memset(pData->SaveTreeItem, 0xFF, sizeof(pData->SaveTreeItem));
+
     // Configure dialog resizing
     if(pData->bEnableResizing)
     {
@@ -778,6 +935,11 @@ static int OnBeginLabelEdit(HWND hDlg, LPNMTVDISPINFO pNMDispInfo)
                                                     ReparseData->SymbolicLinkReparseBuffer.PrintNameOffset,
                                                     ReparseData->SymbolicLinkReparseBuffer.PrintNameLength);
                 break;
+
+            case ITEM_TYPE_APPEXEC_LNK:
+                bStartEditing = TreeView_EditNamedValue(hWndEdit, pNMDispInfo);
+                break;
+
         }
     }
 
@@ -832,11 +994,17 @@ static int OnEndLabelEdit(HWND hDlg, NMTVDISPINFO * pNMDispInfo)
                 if(ReparseData->ReparseTag == IO_REPARSE_TAG_SYMLINK)
                     dwErrCode = SetReparseDataPrintName(ReparseData, ReparseData->SymbolicLinkReparseBuffer.PathBuffer, pNMDispInfo->item.pszText);
                 break;
+
+            case ITEM_TYPE_APPEXEC_LNK:
+                if(ReparseData->ReparseTag == IO_REPARSE_TAG_APPEXECLINK)
+                    dwErrCode = SetReparseDataSubString(ReparseData, pNMDispInfo);
+                break;
         }
 
         // If we are going to accept changes, we need to update the view
         if(dwErrCode == ERROR_SUCCESS)
         {
+            TreeView_SaveFocused(pData, hDlg, IDC_REPARSE_DATA);
             SetWindowLongPtr(hDlg, DWLP_MSGRESULT, TRUE);
             PostMessage(hDlg, WM_UPDATE_VIEW, 0, 0);
         }
@@ -985,6 +1153,7 @@ static void OnUpdateView(HWND hDlg)
     PREPARSE_DATA_BUFFER ReparseData;
     TFileTestData * pData = GetDialogData(hDlg);
     HTREEITEM hItem = TVI_ROOT;
+    LPCWSTR szString;
     TCHAR szItemText[MAX_PATH];
     HWND hWndChild = GetDlgItem(hDlg, IDC_REPARSE_DATA);
 
@@ -993,7 +1162,7 @@ static void OnUpdateView(HWND hDlg)
     ReparseData = pData->ReparseData;
 
     // Insert the three common fields from the REPARSE_DATA
-    TreeView_InsertNameAndValue(hWndChild, hItem, _T("Tag"), FormatReparseTag(ReparseData->ReparseTag, szItemText, _countof(szItemText)), ITEM_TYPE_REPARSE_TAG);
+    TreeView_InsertNameAndValue(hWndChild, hItem, _T("Tag"), StringCchReparseTag(szItemText, _countof(szItemText), ReparseData->ReparseTag), ITEM_TYPE_REPARSE_TAG);
     TreeView_InsertInteger(hWndChild, hItem, _T("ReparseDataLength"), _T("0x%02X"), ReparseData->ReparseDataLength);
     TreeView_InsertInteger(hWndChild, hItem, _T("Reserved"), _T("0x%02X"), ReparseData->Reserved);
 
@@ -1049,21 +1218,24 @@ static void OnUpdateView(HWND hDlg)
             if(hItem != NULL)
             {
                 // Insert the string count
-                TreeView_InsertInteger(hWndChild, hItem, _T("StringCount"), _T("0x%04X"), ReparseData->AppExecLinkReparseBuffer.StringCount);
+                TreeView_InsertInteger(hWndChild, hItem, _T("Version"), _T("0x%04X"), ReparseData->AppExecLinkReparseBuffer.Version);
+                szString = ReparseData->AppExecLinkReparseBuffer.StringList;
 
-                // Insert the strings
-                if(ReparseData->AppExecLinkReparseBuffer.StringCount != 0)
-                {
-                    LPWSTR szString = (LPWSTR)ReparseData->AppExecLinkReparseBuffer.StringList;
-                    WCHAR szValue[0x300];
+                // Package Family Name
+                TreeView_InsertNameAndValue(hWndChild, hItem, L"AppPackageID", szString, ITEM_TYPE_APPEXEC_LNK);
+                szString = NextString(szString);
 
-                    for(ULONG i = 0; i < ReparseData->AppExecLinkReparseBuffer.StringCount; i++)
-                    {
-                        StringCchPrintf(szValue, _countof(szValue), _T("%s: %s"), AppExecLinkParts[i], szString);
-                        TreeView_InsertString(hWndChild, hItem, szValue);
-                        szString += wcslen(szString) + 1;
-                    }
-                }
+                // Application User Model ID
+                TreeView_InsertNameAndValue(hWndChild, hItem, L"AppUserModelID", szString, ITEM_TYPE_APPEXEC_LNK);
+                szString = NextString(szString);
+
+                // Target executable path
+                TreeView_InsertNameAndValue(hWndChild, hItem, L"TargetExecutablePath", szString, ITEM_TYPE_APPEXEC_LNK);
+                szString = NextString(szString);
+
+                // Application type
+                TreeView_InsertNameAndValue(hWndChild, hItem, L"AppTypeID", szString, ITEM_TYPE_APPEXEC_LNK);
+                szString = NextString(szString);
             }
             break;
 
@@ -1104,6 +1276,9 @@ static void OnUpdateView(HWND hDlg)
 
     // Expand the tree view
     TreeView_Expand(hWndChild, hItem, TVE_EXPAND);
+
+    // Restore the focused item
+    TreeView_LoadFocused(pData, hDlg, IDC_REPARSE_DATA);
 }
 
 static int OnHardlinkCreate(HWND hDlg)
@@ -1321,10 +1496,11 @@ static int OnHardlinkDelete(HWND hDlg)
 
 static int OnReparseCreate(HWND hDlg)
 {
+    FILE_BASIC_INFORMATION BasicInfo;
     PREPARSE_DATA_BUFFER ReparseData;
-    TFileTestData * pData = GetDialogData(hDlg);
     OBJECT_ATTRIBUTES ObjAttr;
     IO_STATUS_BLOCK IoStatus = { 0 };
+    TFileTestData * pData = GetDialogData(hDlg);
     UNICODE_STRING FileName;
     NTSTATUS Status;
     HANDLE hReparse = NULL;
@@ -1343,6 +1519,10 @@ static int OnReparseCreate(HWND hDlg)
         // Get the name of the target. If it doesn't exist, we create new
         if(ReparseTargetIsDirectory(ReparseData))
             CreateOptions |= FILE_DIRECTORY_FILE;
+
+        // If the target is already a reparse point, open the reparse point instead of the item itself
+        if(NtQueryAttributesFile(&ObjAttr, &BasicInfo) == STATUS_SUCCESS && (BasicInfo.FileAttributes & FILE_ATTRIBUTE_REPARSE_POINT))
+            CreateOptions |= FILE_OPEN_REPARSE_POINT;
 
         // Create/open the reparse point
         Status = NtCreateFile(&hReparse,
@@ -1428,6 +1608,7 @@ static int OnReparseQuery(HWND hDlg)
             {
                 // Update the view
                 pData->ReparseDataValid = (ULONG)IoStatus.Information;
+                TreeView_SaveFocused(pData, hDlg, IDC_REPARSE_DATA);
                 PostMessage(hDlg, WM_UPDATE_VIEW, Status, 0);
             }
 
