@@ -241,6 +241,7 @@ struct TFileTestData : public TWindowData
     TOpenPacket   OpenFile;                 // Set of flags for NtCreateFile/CreateFileW
     ULONG         IsDefaultFileName1:1;     // TRUE: The file name was created as default
     ULONG         UseRelativeFile:1;        // TRUE: Uset the relative file name (even if the name is empty)
+    UINT          SaveTreeItem[4];          // Saved tree view item
 
     LARGE_INTEGER SectionOffset;            // Section Offset for NtCreateSection
     LARGE_INTEGER MaximumSize;              // Maximum size of section for NtCreateSection

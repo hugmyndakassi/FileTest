@@ -875,8 +875,12 @@ typedef struct _REPARSE_DATA_BUFFER
         // Structure for IO_REPARSE_TAG_APPEXECLINK
         struct
         {
-            ULONG StringCount;                  // Number of the strings in the StringList, separated by '\0'
-            WCHAR StringList[1];                // Multistring (strings separated by '\0', terminated by '\0\0')
+            ULONG Version;                      // Currently observed as 3
+            WCHAR StringList[1];                // Three consecutive NUL-terminated strings
+                                                // [0] Package Family Name  (e.g. "Microsoft.WindowsTerminal_8wekyb3d8bbwe")
+                                                // [1] Application User Model ID / entry point (e.g. "...!App")
+                                                // [2] Target executable path
+                                                // [3] Application type, ASCII decimal ("0" = Desktop Bridge; else sandboxed UWP)
         } AppExecLinkReparseBuffer;
 
         // Structure for IO_REPARSE_TAG_WCI (0x80000018)

@@ -503,7 +503,7 @@ static void CopyFileWorker_ByHand(TDialogData * pData, LPCTSTR szFileName1, LPCT
     if(dwCopyFlags & COPY_FILE_LOG_IO_ERRORS)
     {
         GetModuleFileName(NULL, szLogFile, _countof(szLogFile));
-        ReplaceFileExt(szLogFile, _T(".log"));
+        ReplaceFileExt(szLogFile, _countof(szLogFile), _T(".log"));
         pData->hLogFile = CreateFile(szLogFile, GENERIC_WRITE, FILE_SHARE_READ, NULL, CREATE_ALWAYS, 0, NULL);
         if(IsHandleInvalid(pData->hLogFile))
             dwErrCode = GetLastError();
