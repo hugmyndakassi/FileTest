@@ -3133,6 +3133,17 @@ static int OnEndLabelEdit(HWND hDlg, NMTVDISPINFO * pTVDispInfo)
     return TRUE;
 }
 
+BOOL OnTVKeyDown(HWND /* hDlg */, LPNMTVKEYDOWN pNMTVKeyDown)
+{
+    // On Ctrl+C, copy the text to clipboard
+    if(pNMTVKeyDown->wVKey == 'C' && GetAsyncKeyState(VK_CONTROL) < 0)
+    {
+        TreeView_CopyToClipboard(pNMTVKeyDown->hdr.hwndFrom);
+        return TRUE;
+    }
+    return FALSE;
+}
+
 static int OnDoubleClick(HWND hDlg, LPNMHDR pNMHDR)
 {
     TStructMember * pMemberInfo;
@@ -3711,7 +3722,7 @@ static int OnNotify(HWND hDlg, NMHDR * pNMHDR)
             return OnEndLabelEdit(hDlg, (NMTVDISPINFO *)pNMHDR);
 
         case TVN_KEYDOWN:
-            return OnTVKeyDown_CopyToClipboard(hDlg, (LPNMTVKEYDOWN)pNMHDR);
+            return OnTVKeyDown(hDlg, (LPNMTVKEYDOWN)pNMHDR);
 
         case NM_DBLCLK:
             return OnDoubleClick(hDlg, pNMHDR);

@@ -491,7 +491,6 @@ HTREEITEM InsertTreeItem(HWND hWndTree, HTREEITEM hParent, LPARAM lParam, UINT n
 
 void TreeView_DeleteChildren(HWND hWndTree, HTREEITEM hParent);
 void TreeView_CopyToClipboard(HWND hWndTree);
-int OnTVKeyDown_CopyToClipboard(HWND hDlg, LPNMTVKEYDOWN pNMTVKeyDown);
 
 HANDLE OpenCurrentToken(DWORD dwDesiredAccess);
 BOOL GetTokenElevation(PBOOL pbElevated);
@@ -508,7 +507,7 @@ NTSTATUS FileNameToUnicodeString(PUNICODE_STRING FileName, LPCTSTR szFileName);
 void     FreeFileNameString(PUNICODE_STRING FileName);
 
 NTSTATUS ConvertToNtName(HWND hDlg, UINT nIDEdit);
-int      ConvertToWin32Name(HWND hDlg, UINT nIDEdit);
+DWORD    ConvertToWin32Name(HWND hDlg, UINT nIDEdit);
 
 LPTSTR FlagsToString(TFlagInfo * pFlags, LPTSTR szBuffer, size_t cchBuffer, DWORD dwBitMask, bool bNewLineSeparated = false);
 LPTSTR NamedValueToString(TFlagInfo * pFlags, LPTSTR szBuffer, size_t cchBuffer, LPCTSTR szFormat, DWORD dwBitMask);
@@ -522,8 +521,8 @@ DWORD StringToFileID(LPCTSTR szFileOrObjId, LPTSTR szVolume, PVOID pvFileObjId, 
 void SidToString(PSID pvSid, LPTSTR szString, size_t cchString, bool bAddUserName);
 
 HMENU FindContextMenu(UINT nIDMenu);
-int ExecuteContextMenu(HWND hWndParent, HMENU hMenu, LPARAM lParam);
-int ExecuteContextMenuForDlgItem(HWND hWndParent, HMENU hMenu, UINT nIDCtrl);
+BOOL ExecuteContextMenu(HWND hWndParent, HMENU hMenu, LPARAM lParam);
+BOOL ExecuteContextMenuForDlgItem(HWND hWndParent, HMENU hMenu, UINT nIDCtrl);
 
 NTSTATUS NtDeleteReparsePoint(HANDLE ObjectHandle);
 NTSTATUS NtDeleteReparsePoint(POBJECT_ATTRIBUTES PtrObjectAttributes);

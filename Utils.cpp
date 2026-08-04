@@ -662,18 +662,6 @@ void TreeView_CopyToClipboard(HWND hWndTree)
     Clipboard_Finish(hWndTree, hGlobal);
 }
 
-int OnTVKeyDown_CopyToClipboard(HWND /* hDlg */, LPNMTVKEYDOWN pNMTVKeyDown)
-{
-    // On Ctrl+C, copy the text to clipboard
-    if(pNMTVKeyDown->wVKey == 'C' && GetAsyncKeyState(VK_CONTROL) < 0)
-    {
-        TreeView_CopyToClipboard(pNMTVKeyDown->hdr.hwndFrom);
-        return TRUE;
-    }
-
-    return FALSE;
-}
-
 //-----------------------------------------------------------------------------
 // Token operations
 
@@ -1556,7 +1544,7 @@ NTSTATUS ConvertToNtName(HWND hDlg, UINT nIDEdit)
     return Status;
 }
 
-int ConvertToWin32Name(HWND hDlg, UINT nIDEdit)
+DWORD ConvertToWin32Name(HWND hDlg, UINT nIDEdit)
 {
     LPTSTR szNewFileName;
     LPTSTR szFileName;
@@ -1808,7 +1796,7 @@ HMENU FindContextMenu(UINT nIDMenu)
     return LoadMenu(g_hInst, MAKEINTRESOURCE(nIDMenu));
 }
 
-int ExecuteContextMenu(HWND hWndParent, HMENU hMainMenu, LPARAM lParam)
+BOOL ExecuteContextMenu(HWND hWndParent, HMENU hMainMenu, LPARAM lParam)
 {
     HMENU hSubMenu = GetSubMenu(hMainMenu, 0);
     POINT pt;
@@ -1837,7 +1825,7 @@ int ExecuteContextMenu(HWND hWndParent, HMENU hMainMenu, LPARAM lParam)
     return FALSE;
 }
 
-int ExecuteContextMenuForDlgItem(HWND hWndParent, HMENU hMainMenu, UINT nIDCtrl)
+BOOL ExecuteContextMenuForDlgItem(HWND hWndParent, HMENU hMainMenu, UINT nIDCtrl)
 {
     LPARAM lParam;
     HWND hWndChild = GetDlgItem(hWndParent, nIDCtrl);

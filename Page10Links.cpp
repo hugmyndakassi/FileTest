@@ -1014,7 +1014,74 @@ static int OnEndLabelEdit(HWND hDlg, NMTVDISPINFO * pNMDispInfo)
     return TRUE;
 }
 
-static int OnDoubleClick(HWND hDlg, LPNMHDR pNMHDR)
+static BOOL TreeView_ContextMenu(HWND hDlg, UINT nIDCtrl, UINT nIDMenu)
+{
+    HTREEITEM hItem;
+    LPARAM lParam;
+    POINT pt;
+    HMENU hMenu;
+    HWND hWndChild;
+    RECT rect;
+
+    if((hWndChild = GetDlgItem(hDlg, nIDCtrl)) != NULL)
+    {
+        if((hItem = TreeView_GetSelection(hWndChild)) != NULL)
+        {
+            if((hMenu = FindContextMenu(nIDMenu)) != NULL)
+            {
+                // Get the position of the context menu
+                TreeView_GetItemRect(hWndChild, hItem, &rect, TRUE);
+                pt.x = rect.left;
+                pt.y = rect.bottom;
+                ClientToScreen(hWndChild, &pt);
+                lParam = MAKELPARAM(pt.x, pt.y);
+
+                // Execute the menu
+                return ExecuteContextMenu(hDlg, hMenu, lParam);
+            }
+        }
+    }
+    return FALSE;
+}
+
+static BOOL OnTVKeyDown(HWND hDlg, LPNMTVKEYDOWN pNMTVKeyDown)
+{
+    // On Ctrl+C, copy the text to clipboard
+    if(pNMTVKeyDown->wVKey == 'C' && GetAsyncKeyState(VK_CONTROL) < 0)
+    {
+        TreeView_CopyToClipboard(pNMTVKeyDown->hdr.hwndFrom);
+        return TRUE;
+    }
+
+    // On Shift+F10, show the context menu
+    if(pNMTVKeyDown->wVKey == VK_F10 && GetAsyncKeyState(VK_SHIFT) < 0)
+    {
+        TreeView_ContextMenu(hDlg, IDC_REPARSE_DATA, IDR_SAVE_LOAD_MENU);
+        return TRUE;
+    }
+    return FALSE;
+}
+
+static BOOL OnRightClick(HWND hDlg, LPNMHDR pNMHDR)
+{
+    HTREEITEM hItem;
+    POINT ptCursor;
+
+    if(pNMHDR->idFrom == IDC_REPARSE_DATA)
+    {
+        // Select the tree item where the click occured
+        GetCursorPos(&ptCursor);
+        ScreenToClient(pNMHDR->hwndFrom, &ptCursor);
+        if((hItem = TreeView_HitTest(pNMHDR->hwndFrom, &ptCursor)) != NULL)
+            TreeView_SelectItem(pNMHDR->hwndFrom, hItem);
+
+        TreeView_ContextMenu(hDlg, IDC_REPARSE_DATA, IDR_SAVE_LOAD_MENU);
+        return TRUE;
+    }
+    return FALSE;
+}
+
+static BOOL OnDoubleClick(HWND hDlg, LPNMHDR pNMHDR)
 {
     PREPARSE_DATA_BUFFER ReparseData;
     TFileTestData * pData;
@@ -1110,10 +1177,7 @@ static int OnSymlinkQuery(HWND hDlg)
         {
             Status = NtQuerySymbolicLinkObject(Handle, &TargetName, &Length);
             if(NT_SUCCESS(Status))
-            {
                 SetDlgItemText(hDlg, IDC_SYMLINK_TARGET, TargetName.Buffer);
-            }
-
             HeapFree(g_hHeap, 0, TargetName.Buffer);
         }
         else
@@ -1494,6 +1558,96 @@ static int OnHardlinkDelete(HWND hDlg)
     return TRUE;
 }
 
+static BOOL OnSaveToFile(HWND hDlg)
+{
+    PREPARSE_DATA_BUFFER ReparseData;
+    TFileTestData * pData = GetDialogData(hDlg);
+    OPENFILENAME ofn;
+    NTSTATUS Status = STATUS_UNSUCCESSFUL;
+    HANDLE hFile;
+    DWORD cbReparseData;
+    DWORD dwWritten = 0;
+    TCHAR szFileName[MAX_PATH] = { 0 };
+
+    if((ReparseData = pData->ReparseData) != NULL)
+    {
+        // Choose the file name
+        InitOpenFileName(&ofn);
+        ofn.lpstrFile = szFileName;
+        ofn.lpstrTitle = MAKEINTRESOURCE(IDS_SELECT_FILE);
+        ofn.lpstrFilter = MAKEINTRESOURCE(IDS_FILTER_ALL);
+        if(GetSaveFileNameRc(hDlg, &ofn))
+        {
+            // Calculate the size of the reparse point data
+            cbReparseData = FIELD_OFFSET(REPARSE_DATA_BUFFER, SymbolicLinkReparseBuffer);
+            cbReparseData = cbReparseData + ReparseData->ReparseDataLength;
+
+            // Save the file to disk
+            hFile = CreateFile(szFileName, GENERIC_ALL, FILE_SHARE_READ, NULL, CREATE_ALWAYS, 0, NULL);
+            if(hFile != INVALID_HANDLE_VALUE)
+            {
+                if(WriteFile(hFile, ReparseData, cbReparseData, &dwWritten, NULL))
+                    Status = STATUS_SUCCESS;
+                CloseHandle(hFile);
+            }
+            else
+            {
+                Status = NtCurrentTeb()->LastStatusValue;
+            }
+        }
+    }
+    SetResultInfo(hDlg, RSI_NTSTATUS, Status);
+    return TRUE;
+}
+
+static BOOL OnLoadFromFile(HWND hDlg)
+{
+    PREPARSE_DATA_BUFFER NewReparseData;
+    TFileTestData * pData = GetDialogData(hDlg);
+    OPENFILENAME ofn;
+    NTSTATUS Status = STATUS_UNSUCCESSFUL;
+    LPBYTE pbReparsePoint;
+    DWORD cbReparsePoint = 0;
+    TCHAR szFileName[MAX_PATH] = { 0 };
+
+    // Choose the file name
+    InitOpenFileName(&ofn);
+    ofn.lpstrFile = szFileName;
+    ofn.lpstrTitle = MAKEINTRESOURCE(IDS_SELECT_FILE);
+    ofn.lpstrFilter = MAKEINTRESOURCE(IDS_FILTER_ALL);
+    if(GetOpenFileNameRc(hDlg, &ofn))
+    {
+        // Load the file from disk
+        if((pbReparsePoint = LoadFileToMemory(szFileName, &cbReparsePoint)) != NULL)
+        {
+            // Reallocate the buffer for reparse data, if needed
+            if(cbReparsePoint > pData->ReparseDataLength)
+            {
+                NewReparseData = (PREPARSE_DATA_BUFFER)HeapReAlloc(g_hHeap, HEAP_ZERO_MEMORY, pData->ReparseData, cbReparsePoint);
+                if(NewReparseData == NULL)
+                {
+                    HeapFree(g_hHeap, 0, pbReparsePoint);
+                    return FALSE;
+                }
+
+                pData->ReparseData = NewReparseData;
+                pData->ReparseDataLength = cbReparsePoint;
+            }
+
+            // Copy the new reparse data to the buffer
+            memset(pData->ReparseData, 0, pData->ReparseDataLength);
+            memcpy(pData->ReparseData, pbReparsePoint, cbReparsePoint);
+
+            // Update the view with the newly loaded reparse data
+            TreeView_SaveFocused(pData, hDlg, IDC_REPARSE_DATA);
+            PostMessage(hDlg, WM_UPDATE_VIEW, 0, 0);
+            Status = STATUS_SUCCESS;
+        }
+    }
+    SetResultInfo(hDlg, RSI_NTSTATUS, Status);
+    return TRUE;
+}
+
 static int OnReparseCreate(HWND hDlg)
 {
     FILE_BASIC_INFORMATION BasicInfo;
@@ -1608,7 +1762,6 @@ static int OnReparseQuery(HWND hDlg)
             {
                 // Update the view
                 pData->ReparseDataValid = (ULONG)IoStatus.Information;
-                TreeView_SaveFocused(pData, hDlg, IDC_REPARSE_DATA);
                 PostMessage(hDlg, WM_UPDATE_VIEW, Status, 0);
             }
 
@@ -1673,6 +1826,12 @@ static int OnCommand(HWND hDlg, UINT nNotify, UINT nIDCtrl)
             case IDC_HARDLINK_DELETE:
                 return OnHardlinkDelete(hDlg);
 
+            case IDC_SAVE_TO_FILE:
+                return OnSaveToFile(hDlg);
+
+            case IDC_LOAD_FROM_FILE:
+                return OnLoadFromFile(hDlg);
+
             case IDC_REPARSE_CREATE:
                 return OnReparseCreate(hDlg);
 
@@ -1704,7 +1863,10 @@ static int OnNotify(HWND hDlg, LPNMHDR pNMHDR)
             return OnEndLabelEdit(hDlg, (LPNMTVDISPINFO)pNMHDR);
 
         case TVN_KEYDOWN:
-            return OnTVKeyDown_CopyToClipboard(hDlg, (LPNMTVKEYDOWN)pNMHDR);
+            return OnTVKeyDown(hDlg, (LPNMTVKEYDOWN)pNMHDR);
+
+        case NM_RCLICK:
+            return OnRightClick(hDlg, pNMHDR);
 
         case NM_DBLCLK:
             return OnDoubleClick(hDlg, pNMHDR);
