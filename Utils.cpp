@@ -557,6 +557,46 @@ BOOL TreeView_EditLabel_ID(HWND hDlg, UINT nID)
     return bResult;
 }
 
+// Executes context menu on any tree view's item
+BOOL TreeView_ContextMenu(HWND hDlg, HWND hWndChild, HTREEITEM hItem, HMENU hMenu, LPARAM lParam)
+{
+    POINT pt;
+    RECT rect;
+
+    // If we don't have the coords, make them from the tree item
+    if(lParam == 0xFFFFFFFF)
+    {
+        TreeView_GetItemRect(hWndChild, hItem, &rect, TRUE);
+        pt.x = rect.left;
+        pt.y = rect.bottom;
+        ClientToScreen(hWndChild, &pt);
+        lParam = MAKELPARAM(pt.x, pt.y);
+    }
+
+    // Execute the menu
+    return ExecuteContextMenu(hDlg, hMenu, lParam);
+}
+
+// Executes context menu on tree view's selected item
+BOOL TreeView_ContextMenu(HWND hDlg, UINT nIDCtrl, UINT nIDMenu)
+{
+    HTREEITEM hItem;
+    HMENU hMenu;
+    HWND hWndChild;
+
+    if((hWndChild = GetDlgItem(hDlg, nIDCtrl)) != NULL)
+    {
+        if((hItem = TreeView_GetSelection(hWndChild)) != NULL)
+        {
+            if((hMenu = FindContextMenu(nIDMenu)) != NULL)
+            {
+                return TreeView_ContextMenu(hDlg, hWndChild, hItem, hMenu);
+            }
+        }
+    }
+    return FALSE;
+}
+
 HTREEITEM InsertTreeItem(HWND hWndTree, HTREEITEM hParent, HTREEITEM hInsertAfter, LPCTSTR szText, PVOID pParam)
 {
     TVINSERTSTRUCT tvis;
@@ -660,18 +700,6 @@ void TreeView_CopyToClipboard(HWND hWndTree)
 
     hGlobal = TreeView_CopyToClipboard(hWndTree, TreeView_GetSelection(hWndTree), hGlobal, 0);
     Clipboard_Finish(hWndTree, hGlobal);
-}
-
-int OnTVKeyDown_CopyToClipboard(HWND /* hDlg */, LPNMTVKEYDOWN pNMTVKeyDown)
-{
-    // On Ctrl+C, copy the text to clipboard
-    if(pNMTVKeyDown->wVKey == 'C' && GetAsyncKeyState(VK_CONTROL) < 0)
-    {
-        TreeView_CopyToClipboard(pNMTVKeyDown->hdr.hwndFrom);
-        return TRUE;
-    }
-
-    return FALSE;
 }
 
 //-----------------------------------------------------------------------------
@@ -1556,7 +1584,7 @@ NTSTATUS ConvertToNtName(HWND hDlg, UINT nIDEdit)
     return Status;
 }
 
-int ConvertToWin32Name(HWND hDlg, UINT nIDEdit)
+DWORD ConvertToWin32Name(HWND hDlg, UINT nIDEdit)
 {
     LPTSTR szNewFileName;
     LPTSTR szFileName;
@@ -1808,7 +1836,7 @@ HMENU FindContextMenu(UINT nIDMenu)
     return LoadMenu(g_hInst, MAKEINTRESOURCE(nIDMenu));
 }
 
-int ExecuteContextMenu(HWND hWndParent, HMENU hMainMenu, LPARAM lParam)
+BOOL ExecuteContextMenu(HWND hWndParent, HMENU hMainMenu, LPARAM lParam)
 {
     HMENU hSubMenu = GetSubMenu(hMainMenu, 0);
     POINT pt;
@@ -1837,7 +1865,7 @@ int ExecuteContextMenu(HWND hWndParent, HMENU hMainMenu, LPARAM lParam)
     return FALSE;
 }
 
-int ExecuteContextMenuForDlgItem(HWND hWndParent, HMENU hMainMenu, UINT nIDCtrl)
+BOOL ExecuteContextMenuForDlgItem(HWND hWndParent, HMENU hMainMenu, UINT nIDCtrl)
 {
     LPARAM lParam;
     HWND hWndChild = GetDlgItem(hWndParent, nIDCtrl);

@@ -3257,14 +3257,13 @@ static int OnDeleteItem(HWND /* hDlg */, LPNMTREEVIEW pNMTreeView)
     return TRUE;
 }
 
-static int OnTVContextMenu(HWND hDlg, LPARAM lParam)
+static BOOL OnTVContextMenu(HWND hDlg, LPARAM lParam)
 {
     PTREE_ITEM_INFO pItemInfo;
     HTREEITEM hItem;
-    POINT pt;
-    HMENU hMainMenu = NULL;
+    HMENU hMenu;
     HWND hWndTree = GetDlgItem(hDlg, IDC_SECURITY);
-    RECT rect;
+    UINT nIDMenu = 0;
 
     // Get the selected item
     if((hItem = TreeView_GetSelection(hWndTree)) != NULL)
@@ -3276,36 +3275,25 @@ static int OnTVContextMenu(HWND hDlg, LPARAM lParam)
             {
                 case ItemTypeDacl:
                 case ItemTypeSacl:
-                    hMainMenu = FindContextMenu(IDR_ACL_TYPE_MENU);
+                    nIDMenu = IDR_ACL_TYPE_MENU;
                     break;
 
                 case ItemTypeAce:
-                    hMainMenu = FindContextMenu(IDR_ACE_MENU);
+                    nIDMenu = IDR_ACE_MENU;
                     break;
             }
         }
 
         // If we picked a menu, execute it
-        if(hMainMenu != 0)
+        if(nIDMenu != 0 && (hMenu = FindContextMenu(nIDMenu)) != NULL)
         {
             // Update the menu
-            UpdateContextMenu(hWndTree, hItem, hMainMenu);
+            UpdateContextMenu(hWndTree, hItem, hMenu);
 
-            // If we don't have the coords, make them from the tree item
-            if(lParam == 0xFFFFFFFF)
-            {
-                TreeView_GetItemRect(hWndTree, hItem, &rect, TRUE);
-                pt.x = rect.left;
-                pt.y = rect.bottom;
-                ClientToScreen(hWndTree, &pt);
-                lParam = MAKELPARAM(pt.x, pt.y);
-            }
-
-            // Execute the menu
-            return ExecuteContextMenu(hDlg, hMainMenu, lParam);
+            // Execute the context menu
+            return TreeView_ContextMenu(hDlg, hWndTree, hItem, hMenu, lParam);
         }
     }
-
     return FALSE;
 }
 

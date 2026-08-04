@@ -2,7 +2,6 @@
 // Microsoft Visual C++ generated include file.
 // Used by FileTest.rc
 //
-
 #define IDI_FILE_TEST                   101
 #define IDD_PAGE00_TRANSACTION          102
 #define IDD_PAGE01_CREATE               103
@@ -52,6 +51,8 @@
 #define IDR_DELETE_FILE_MENU            146
 #define IDD_SETTINGS03                  146
 #define IDD_NT_ATTRIBUTES               147
+#define IDR_REQUEST_OPLOCK_MENU1        147
+#define IDR_SAVE_LOAD_MENU              147
 #define IDD_NT_ATTRIBUTES1              148
 #define IDD_PAGE02_NTCREATE_RELFILE     149
 #define IDD_HELP_COMMAND_LINE           150
@@ -499,13 +500,15 @@
 #define IDC_DELETE_OBJECT_TREE          40063
 #define IDC_SET_FULL_CONTROL            40066
 #define IDC_SET_ACE_TYPE                40068
+#define IDC_SAVE_TO_FILE                40070
+#define IDC_LOAD_FROM_FILE              40071
 
 // Next default values for new objects
-//
+// 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        153
-#define _APS_NEXT_COMMAND_VALUE         40070
+#define _APS_NEXT_COMMAND_VALUE         40072
 #define _APS_NEXT_CONTROL_VALUE         1262
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
