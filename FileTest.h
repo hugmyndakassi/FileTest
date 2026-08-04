@@ -492,6 +492,9 @@ HTREEITEM InsertTreeItem(HWND hWndTree, HTREEITEM hParent, LPARAM lParam, UINT n
 void TreeView_DeleteChildren(HWND hWndTree, HTREEITEM hParent);
 void TreeView_CopyToClipboard(HWND hWndTree);
 
+BOOL TreeView_ContextMenu(HWND hDlg, HWND hWndChild, HTREEITEM hItem, HMENU hMenu, LPARAM lParam = 0xFFFFFFFF);
+BOOL TreeView_ContextMenu(HWND hDlg, UINT nIDCtrl, UINT nIDMenu);
+
 HANDLE OpenCurrentToken(DWORD dwDesiredAccess);
 BOOL GetTokenElevation(PBOOL pbElevated);
 BOOL GetTokenVirtualizationEnabled(PBOOL pbEnabled);

@@ -1014,36 +1014,6 @@ static int OnEndLabelEdit(HWND hDlg, NMTVDISPINFO * pNMDispInfo)
     return TRUE;
 }
 
-static BOOL TreeView_ContextMenu(HWND hDlg, UINT nIDCtrl, UINT nIDMenu)
-{
-    HTREEITEM hItem;
-    LPARAM lParam;
-    POINT pt;
-    HMENU hMenu;
-    HWND hWndChild;
-    RECT rect;
-
-    if((hWndChild = GetDlgItem(hDlg, nIDCtrl)) != NULL)
-    {
-        if((hItem = TreeView_GetSelection(hWndChild)) != NULL)
-        {
-            if((hMenu = FindContextMenu(nIDMenu)) != NULL)
-            {
-                // Get the position of the context menu
-                TreeView_GetItemRect(hWndChild, hItem, &rect, TRUE);
-                pt.x = rect.left;
-                pt.y = rect.bottom;
-                ClientToScreen(hWndChild, &pt);
-                lParam = MAKELPARAM(pt.x, pt.y);
-
-                // Execute the menu
-                return ExecuteContextMenu(hDlg, hMenu, lParam);
-            }
-        }
-    }
-    return FALSE;
-}
-
 static BOOL OnTVKeyDown(HWND hDlg, LPNMTVKEYDOWN pNMTVKeyDown)
 {
     // On Ctrl+C, copy the text to clipboard
